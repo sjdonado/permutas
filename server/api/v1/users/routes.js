@@ -1,5 +1,7 @@
 const router = require('express').Router();
 
+const messagesRouter = require('./../messages/routes');
+
 const {
   auth,
   authFailed,
@@ -20,5 +22,8 @@ router.route('/')
 
 router.route('/signin')
   .post(controller.signin, authFailed);
+
+router
+  .use('/:userId/messages', messagesRouter);
 
 module.exports = router;

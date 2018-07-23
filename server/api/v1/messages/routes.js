@@ -17,8 +17,8 @@ router.route('/')
   .get(controller.all)
   .post(controller.create);
 
-router.route('/interaction')
-  .post(controller.interaction);
+router.route('/global')
+  .post(controller.createGlobal);
 
 router.route('/:id')
   .get(controller.read)

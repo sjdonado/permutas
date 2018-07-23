@@ -16,6 +16,10 @@ const fields = {
       ref: 'user',
     },
   ],
+  kind: {
+    type: String,
+    default: 'interaction',
+  },
 };
 
 const references = {
@@ -27,7 +31,6 @@ const references = {
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'user',
-    required: true,
   },
 };
 

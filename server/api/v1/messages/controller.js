@@ -57,9 +57,11 @@ exports.all = (req, res, next) => {
     populate,
   } = filterByNested(params, referencesNames);
 
+  const globalFilters = Object.assign(filters, { kind: 'global' });
+
   const count = Model.count();
   const all = Model
-    .find(filters)
+    .find(globalFilters)
     .sort(sort)
     .skip(skip)
     .limit(limit)
@@ -89,29 +91,38 @@ exports.all = (req, res, next) => {
     });
 };
 
-exports.create = (req, res, next) => {
+exports.createGlobal = (req, res, next) => {
   const {
     body,
     doc,
   } = req;
 
-  Object.assign(body, { ownerId: doc.id });
+  if (doc.isAdmin()) {
+    Object.assign(body, { ownerId: doc.id, kind: 'global' });
 
-  const document = new Model(body);
-  document.save()
-    .then((response) => {
-      res.status(201);
-      res.json({
-        success: true,
-        item: response,
+    const document = new Model(body);
+    document.save()
+      .then((response) => {
+        res.status(201);
+        res.json({
+          success: true,
+          item: response,
+        });
+      })
+      .catch((err) => {
+        next(new Error(err));
       });
-    })
-    .catch((err) => {
-      next(new Error(err));
+  } else {
+    const message = 'Forbidden';
+    res.status(403);
+    res.json({
+      success: false,
+      message,
     });
+  }
 };
 
-exports.interaction = (req, res, next) => {
+exports.create = (req, res, next) => {
   const {
     body,
     doc,
