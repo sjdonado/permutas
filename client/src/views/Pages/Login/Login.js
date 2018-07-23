@@ -1,19 +1,46 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
-import { 
-  Button, 
+import { Link, Redirect } from 'react-router-dom';
+
+import {
+  Button,
   Card,
-  CardBody, 
-  CardGroup, 
-  Col, 
-  Container, 
-  Input, 
-  InputGroup, 
-  InputGroupAddon, 
-  InputGroupText, 
-  Row } from 'reactstrap';
+  CardBody,
+  CardGroup,
+  Col,
+  Container,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  Row
+} from 'reactstrap';
+const Requests = require('../../../Requests');
 
 class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: ''
+    }
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  handleSubmit(e) {
+    e.preventDefault();
+    const doc = {
+      email: this.state.email,
+      password: this.state.password
+    }
+    Requests.post('/api/v1/users/signin', doc)
+      .then(res => {
+        console.log(res);
+        <Redirect to="/" />
+      })
+      .catch(err => {
+        this.showAlert("Ocurrió un error");
+        console.error(err);
+      });
+  }
   render() {
     return (
       <div className="app flex-row align-items-center">
@@ -31,7 +58,7 @@ class Login extends Component {
                           <i className="icon-user"></i>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input type="text" placeholder="Email" />
+                      <Input type="text" placeholder="Correo electrónico" ref={(input) => { this.state.email = input }} />
                     </InputGroup>
                     <InputGroup className="mb-4">
                       <InputGroupAddon addonType="prepend">
@@ -39,12 +66,12 @@ class Login extends Component {
                           <i className="icon-lock"></i>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input type="password" placeholder="Contraseña" />
+                      <Input type="password" placeholder="Contraseña" ref={(input) => { this.state.password = input }} />
                     </InputGroup>
                     <Row>
                       <Col xs="6">
                         <Button color="primary" className="px-4">Iniciar Sesión</Button>
-                      </Col>                      
+                      </Col>
                     </Row>
                   </CardBody>
                 </Card>
@@ -54,11 +81,11 @@ class Login extends Component {
                       <h2>Registrarse</h2>
                       <p>¡Crea una cuenta!</p>
                       <Link to="/register">
-                        <Button 
+                        <Button
                           color="primary"
                           className="mt-3"
                           active >
-                            Crear cuenta
+                          Crear cuenta
                         </Button>
                       </Link>
                     </div>
