@@ -6,12 +6,6 @@ const {
 } = mongoose;
 
 const fields = {
-  username: {
-    type: String,
-    required: true,
-    trim: true,
-    lowercase: true,
-  },
   fullname: {
     type: String,
     required: true,
@@ -49,7 +43,7 @@ const fields = {
   },
   municipality: {
     type: String,
-    required: true,
+    default: '',
   },
   village: {
     type: String,
@@ -73,7 +67,7 @@ const fields = {
   },
   role: {
     type: String,
-    required: true,
+    default: 'teacher',
   },
 };
 
@@ -81,21 +75,33 @@ const user = new Schema(fields, {
   timestamps: true,
 });
 
+const blacklistFields = ['password', 'role'];
+// const cleanFields = ['password', 'role', '__v', 'createdAt', 'updatedAt', '_id'];
+
+
 user.methods.toJSON = function toJSON() {
   const doc = this.toObject();
-  delete doc.password;
+  blacklistFields.forEach((field) => {
+    if (Object.hasOwnProperty.call(doc, field)) {
+      delete doc[field];
+    }
+  });
   return doc;
 };
 
-user.pre('save', function save(next) {
+user.pre('save', function Save(next) {
   if (this.isNew || this.isModified('password')) {
-    this.password = bcrypt.hashSync(this.password, bcrypt.genSalt());
+    this.password = bcrypt.hashSync(this.password);
   }
   next();
 });
 
 user.methods.verifyPassword = function verifyPassword(password) {
   return bcrypt.compareSync(password, this.password);
+};
+
+user.methods.isAdmin = function isAdmin() {
+  return this.role === 'admin';
 };
 
 module.exports = {

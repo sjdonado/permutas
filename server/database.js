@@ -7,7 +7,7 @@ const {
 } = config;
 
 exports.connect = () => {
-  mongoose.connect(database.url);
+  mongoose.connect(database.url, { useNewUrlParser: true });
 
   mongoose.connection.on('open', () => {
     console.log('Database connected');

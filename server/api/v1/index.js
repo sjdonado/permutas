@@ -1,9 +1,9 @@
 const router = require('express').Router();
 
-const swaps = require('./swaps/routes');
+const messages = require('./messages/routes');
 const users = require('./users/routes');
 
-router.use('/swaps', swaps);
+router.use('/messages', messages);
 router.use('/users', users);
 
 module.exports = router;

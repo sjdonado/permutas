@@ -2,12 +2,23 @@ const router = require('express').Router();
 
 const controller = require('./controller');
 
+const userController = require('../users/controller');
+
+const {
+  auth,
+} = require('./../../../middlewares/auth');
+
+router.use(auth, userController.id);
+
 router
   .param('id', controller.id);
 
 router.route('/')
   .get(controller.all)
   .post(controller.create);
+
+router.route('/interaction')
+  .post(controller.interaction);
 
 router.route('/:id')
   .get(controller.read)

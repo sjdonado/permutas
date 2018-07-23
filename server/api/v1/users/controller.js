@@ -4,27 +4,36 @@ const {
 } = require('./model');
 
 const {
+  signToken,
+} = require('./../../../middlewares/auth');
+
+const {
   parsePaginationParams,
   parseSortParams,
   compactSortToStr,
 } = require('./../../../utils/');
 
-exports.id = (req, res, next, id) => {
-  Model.findById(id)
-    .then((doc) => {
-      if (doc) {
-        req.doc = doc;
-        next();
-      } else {
-        res.json({
-          sucess: false,
-          message: `${Model.modelName} not found`,
-        });
-      }
-    })
-    .catch((err) => {
-      next(new Error(err));
-    });
+exports.id = (req, res, next) => {
+  if (req.decoded) {
+    Model.findById(req.decoded.id)
+      .then((doc) => {
+        if (doc) {
+          req.doc = doc;
+          console.log(doc);
+          next();
+        } else {
+          res.json({
+            sucess: false,
+            message: `${Model.modelName} not found`,
+          });
+        }
+      })
+      .catch((err) => {
+        next(new Error(err));
+      });
+  } else {
+    next();
+  }
 };
 
 exports.all = (req, res, next) => {
@@ -43,7 +52,7 @@ exports.all = (req, res, next) => {
   } = parseSortParams(query, fields);
   const sort = compactSortToStr(sortBy, direction);
 
-  const count = Model.count();
+  const count = Model.countDocuments();
   const all = Model
     .find()
     .sort(sort)
@@ -83,12 +92,21 @@ exports.create = (req, res, next) => {
   document.save()
     .then((doc) => {
       res.status(201);
+
+      const token = signToken({
+        id: doc.id,
+      });
+
       res.json({
         success: true,
         item: doc,
+        meta: {
+          token,
+        },
       });
     })
     .catch((err) => {
+      console.log(err);
       next(new Error(err));
     });
 };
@@ -138,5 +156,42 @@ exports.delete = (req, res, next) => {
     })
     .catch((err) => {
       next(new Error(err));
+    });
+};
+
+exports.signin = (req, res, next) => {
+  const {
+    body,
+  } = req;
+
+  const {
+    email,
+    password,
+  } = body;
+
+  Model
+    .findOne({
+      email,
+    })
+    .exec()
+    .then((user) => {
+      console.log(user);
+      if (user && user.verifyPassword(password)) {
+        const token = signToken({
+          id: user.id,
+        });
+        res.json({
+          success: true,
+          item: user,
+          meta: {
+            token,
+          },
+        });
+      } else {
+        next();
+      }
+    })
+    .catch((error) => {
+      next(new Error(error));
     });
 };

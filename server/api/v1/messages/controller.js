@@ -92,15 +92,53 @@ exports.all = (req, res, next) => {
 exports.create = (req, res, next) => {
   const {
     body,
+    doc,
   } = req;
+
+  Object.assign(body, { ownerId: doc.id });
 
   const document = new Model(body);
   document.save()
-    .then((doc) => {
+    .then((response) => {
       res.status(201);
       res.json({
         success: true,
-        item: doc,
+        item: response,
+      });
+    })
+    .catch((err) => {
+      next(new Error(err));
+    });
+};
+
+exports.interaction = (req, res, next) => {
+  const {
+    body,
+    doc,
+  } = req;
+  const userDoc = doc.toObject();
+
+  const info = `Nombre: ${userDoc.fullname}
+  CC: ${userDoc.dni}
+  Correo electrónico: ${userDoc.email}
+  Teléfono fijo: ${userDoc.phone}
+  Celular: ${userDoc.mobilePhone}
+  Departamento: ${userDoc.department}
+  Municipio: ${userDoc.municipality}
+  Vereda o Corregimiento: ${userDoc.village}
+  Institución Educativa: ${userDoc.school}
+  Escalafón: ${userDoc.educationalLadder}
+  Área de nombramiento: ${userDoc.appointment}`;
+
+  Object.assign(body, { ownerId: doc.id, text: `Te ha contactado el usuario ${userDoc.username}. ${info}` });
+
+  const document = new Model(body);
+  document.save()
+    .then((response) => {
+      res.status(201);
+      res.json({
+        success: true,
+        item: response,
       });
     })
     .catch((err) => {
