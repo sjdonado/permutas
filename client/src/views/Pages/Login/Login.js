@@ -24,11 +24,9 @@ class Login extends Component {
       email: '',
       password: '',
       logged: false
-    }
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.onChange = this.onChange.bind(this);
+    }        
   }
-  handleSubmit(e) {
+  handleSubmit = e => {
     e.preventDefault();
     const doc = {
       email: this.state.email,
@@ -37,7 +35,7 @@ class Login extends Component {
     }
     console.log(doc);
     Requests.post('/users/signin', doc)
-      .then(res => {
+      .then( res => {
         localStorage.setItem('token', res.data.meta.token);
         this.setState({ redirect: true });
       })
@@ -45,7 +43,7 @@ class Login extends Component {
         console.error(err);
       });
   }
-  onChange(e) {
+  onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   }
   render() {
