@@ -115,7 +115,23 @@ class Register extends Component {
                   <h1>Registro</h1>
                   <p className="text-muted">Crea tu cuenta</p>
                   <form>
-
+                  <Row>
+                    <Col md="12">
+                      <InputGroup className="mb-3">
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="icon-user"></i>
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input
+                          type="text"
+                          placeholder="Nombre completo"
+                          name="name"
+                          value={this.state.name}
+                          onChange={this.onChange} />
+                      </InputGroup>
+                    </Col>
+                  </Row>
                     <Row>
                       <Col md="6">
                         <InputGroup className="mb-3">
