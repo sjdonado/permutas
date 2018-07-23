@@ -25,6 +25,7 @@ class Login extends Component {
       password: ''
     }
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
   handleSubmit(e) {
     e.preventDefault();
@@ -32,6 +33,7 @@ class Login extends Component {
       email: this.state.email,
       password: this.state.password
     }
+    console.log(doc);
     Requests.post('/users/signin', doc)
       .then(res => {
         console.log(res);
@@ -40,6 +42,9 @@ class Login extends Component {
       .catch(err => {
         console.error(err);
       });
+  }
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
   }
   render() {
     return (
@@ -58,7 +63,7 @@ class Login extends Component {
                           <i className="icon-user"></i>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input type="text" placeholder="Correo electrónico" ref={(input) => { this.state.email = input }} />
+                      <Input type="text" placeholder="Correo electrónico" name="email" onChange={this.onChange} value={this.state.email} />
                     </InputGroup>
                     <InputGroup className="mb-4">
                       <InputGroupAddon addonType="prepend">
@@ -66,7 +71,7 @@ class Login extends Component {
                           <i className="icon-lock"></i>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input type="password" placeholder="Contraseña" ref={(input) => { this.state.password = input }} />
+                      <Input type="password" placeholder="Contraseña" name="password" onChange={this.onChange} value={this.state.password} />
                     </InputGroup>
                     <Row>
                       <Col xs="6">

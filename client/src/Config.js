@@ -1,1 +1,1 @@
-export const API_URL = "https://permutas.herokuapp.com/api/v1/";
+export const API_URL = process.env.NODE_ENV == 'production' ? 'api/v1/' : "https://permutas.herokuapp.com/api/v1/";
