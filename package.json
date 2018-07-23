@@ -1,11 +1,10 @@
 {
-  "name": "playground",
+  "name": "server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon index",
-    "heroku-postbuild": "cd ui && npm install && npm run build",
     "start": "cross-env NODE_ENV=production  node index",
     "test": "cross-env NODE_ENV=test exit 1"
   },
