@@ -17,7 +17,7 @@ import {
 } from 'reactstrap';
 import { COLOMBIA_TEACHING_LADDER, COLOMBIA_REGION_LIST } from '../../../complements/Colombia';
 import _ from 'lodash';
-const Requests = require('../../../Requests');
+import Requests from '../../../Requests';
 
 class Register extends Component {
   constructor(props) {

@@ -1,1 +1,1 @@
-export const API_URL = "http://test.com/api/";
+export const API_URL = "https://permutas.herokuapp.com/api/v1/";

@@ -14,7 +14,8 @@ import {
   InputGroupText,
   Row
 } from 'reactstrap';
-const Requests = require('../../../Requests');
+
+import Requests from '../../../Requests';
 
 class Login extends Component {
   constructor(props) {
@@ -31,13 +32,12 @@ class Login extends Component {
       email: this.state.email,
       password: this.state.password
     }
-    Requests.post('/api/v1/users/signin', doc)
+    Requests.post('/users/signin', doc)
       .then(res => {
         console.log(res);
         <Redirect to="/" />
       })
       .catch(err => {
-        this.showAlert("Ocurrió un error");
         console.error(err);
       });
   }
@@ -70,7 +70,7 @@ class Login extends Component {
                     </InputGroup>
                     <Row>
                       <Col xs="6">
-                        <Button color="primary" className="px-4">Iniciar Sesión</Button>
+                        <Button color="primary" className="px-4" onClick={this.handleSubmit}>Iniciar Sesión</Button>
                       </Col>
                     </Row>
                   </CardBody>
