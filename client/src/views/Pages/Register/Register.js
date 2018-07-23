@@ -39,7 +39,8 @@ class Register extends Component {
       alert: {
         visible: false,
         message: ''
-      }
+      },
+      redirect: false
     }
   }
 
@@ -91,7 +92,7 @@ class Register extends Component {
     Requests.post('/users', doc)
       .then(res => {
         console.log(res);
-        <Redirect to="/" />
+        this.setState({ redirect: true });
       })
       .catch(err => {
         this.showAlert("Ocurrió un error");
@@ -105,6 +106,9 @@ class Register extends Component {
       toggle={this.onDismiss}>
       {this.state.alert.message}
     </Alert>
+    if (this.state.redirect) {
+      return <Redirect to='/' />;
+    }
     return (
       <div className="app flex-row align-items-center">
         <Container>

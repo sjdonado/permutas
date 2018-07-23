@@ -5,7 +5,6 @@ const BASE = new URL(API_URL);
 
 const request = axios.create({
   baseURL: BASE.toLocaleString(),
-  timeout: 1000,
   headers: {
     'Content-Type': 'application/json',
     'X-Requested-With': 'XMLHttpRequest',

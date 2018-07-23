@@ -22,7 +22,8 @@ class Login extends Component {
     super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      logged: false
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -31,13 +32,14 @@ class Login extends Component {
     e.preventDefault();
     const doc = {
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
+      redirect: false
     }
     console.log(doc);
     Requests.post('/users/signin', doc)
       .then(res => {
         localStorage.setItem('token', res.data.meta.token);
-        <Redirect to="/dashboard" />
+        this.setState({ redirect: true });
       })
       .catch(err => {
         console.error(err);
@@ -47,6 +49,9 @@ class Login extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
   render() {
+    if (this.state.redirect) {
+      return <Redirect to='/' />;
+    }
     return (
       <div className="app flex-row align-items-center">
         <Container>
