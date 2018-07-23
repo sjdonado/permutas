@@ -8,18 +8,16 @@ import {
   REGISTER,
   REGISTER_PAGE_UNLOADED
 } from '../constants/actionTypes';
+import {COLOMBIA_REGION_LIST} from '../constants/colombia';
+import _ from 'lodash';
 
 const mapStateToProps = state => ({ ...state.auth });
 
 const mapDispatchToProps = dispatch => ({
-  onChangeEmail: value =>
-    dispatch({ type: UPDATE_FIELD_AUTH, key: 'email', value }),
-  onChangePassword: value =>
-    dispatch({ type: UPDATE_FIELD_AUTH, key: 'password', value }),
-  onChangeUsername: value =>
-    dispatch({ type: UPDATE_FIELD_AUTH, key: 'username', value }),
-  onSubmit: (username, email, password) => {
-    const payload = agent.Auth.register(username, email, password);
+  //onChange: (key,value) =>
+    //dispatch({type: UPDATE_FIELD_AUTH, key, value}),  
+  onSubmit: newUser => {
+    const payload = agent.Auth.register(newUser);
     dispatch({ type: REGISTER, payload })
   },
   onUnload: () =>
@@ -27,26 +25,47 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class Register extends React.Component {
-  constructor() {
-    super();
-    this.changeEmail = ev => this.props.onChangeEmail(ev.target.value);
-    this.changePassword = ev => this.props.onChangePassword(ev.target.value);
-    this.changeUsername = ev => this.props.onChangeUsername(ev.target.value);
-    this.submitForm = (username, email, password) => ev => {
+  constructor(props) {
+    super(props);
+    //this.onChange = ev => this.props.onChangeField(ev.target.name, ev.target.value);
+    this.submitForm = newUser => ev => {
       ev.preventDefault();
-      this.props.onSubmit(username, email, password);
-    }
+      this.props.onSubmit(newUser);
+    }    
+    
+    this.state = {
+      email: '',
+      password: '',
+      dni: '',
+      name: '',
+      telephone: '',
+      mobile: '',
+      department: 'Atlántico',
+      city: 'Barranquilla',
+      school: '', 
+      teachingLadder: 1,
+      appointmentArea: '',
+      barterDepartment: 'Atlántico'
+    }        
   }
 
   componentWillUnmount() {
     this.props.onUnload();
   }
 
-  render() {
-    const email = this.props.email;
-    const password = this.props.password;
-    const username = this.props.username;
+  filterRegionListByState = department => {
+    return COLOMBIA_REGION_LIST.filter(element => element.departamento === department);
+  }
 
+  fetchDepartments = () => {    
+    return _.uniqBy(COLOMBIA_REGION_LIST, element => element.departamento);
+  }
+
+  onChange = (e) => {        
+    this.setState({[e.target.name]: e.target.value});
+  }
+
+  render() {
     return (
       <div className="auth-page">
         <div className="container page">
@@ -62,34 +81,157 @@ class Register extends React.Component {
 
               <ListErrors errors={this.props.errors} />
 
-              <form onSubmit={this.submitForm(username, email, password)}>
+              <form onSubmit={this.submitForm('df')}>
                 <fieldset>
 
                   <fieldset className="form-group">
                     <input
-                      className="form-control form-control-lg"
-                      type="text"
-                      placeholder="Username"
-                      value={this.props.username}
-                      onChange={this.changeUsername} />
-                  </fieldset>
-
-                  <fieldset className="form-group">
-                    <input
-                      className="form-control form-control-lg"
+                      className="form-control"
                       type="email"
                       placeholder="Email"
-                      value={this.props.email}
-                      onChange={this.changeEmail} />
+                      value={this.state.email}
+                      required
+                      name = "email"
+                      onChange={this.onChange} />
                   </fieldset>
 
                   <fieldset className="form-group">
                     <input
-                      className="form-control form-control-lg"
+                      className="form-control"
                       type="password"
-                      placeholder="Password"
-                      value={this.props.password}
-                      onChange={this.changePassword} />
+                      placeholder="Contraseña"
+                      value={this.state.password}
+                      required
+                      name = "password"
+                      onChange={this.onChange} />
+                  </fieldset>
+
+                  <fieldset className="form-group">
+                    <input
+                      className="form-control"
+                      type="text"
+                      placeholder="Nombre completo"
+                      value={this.state.name}
+                      required
+                      name = "name"
+                      onChange={this.onChange} />
+                  </fieldset>
+
+                  <fieldset className="form-group">
+                    <input
+                      className="form-control"
+                      type="number"
+                      placeholder="Cédula"
+                      value={this.state.dni}
+                      required
+                      name = "dni"
+                      onChange={this.onChange} />
+                  </fieldset>
+
+                  <fieldset className="form-group">
+                    <input
+                      className="form-control"
+                      type="text"
+                      placeholder="Teléfono"
+                      value={this.state.telephone}
+                      required
+                      name = "telephone"
+                      onChange={this.onChange} />
+                  </fieldset>
+
+                  <fieldset className="form-group">
+                    <input
+                      className="form-control"
+                      type="number"
+                      placeholder="Celular"
+                      value={this.state.mobile}
+                      required
+                      name = "mobile"
+                      onChange={this.onChange} />
+                  </fieldset>
+
+                  <fieldset className="form-group">
+                    <label for = "department">Departamento</label>
+                    <select
+                      className="form-control"
+                      value={this.state.department}
+                      required
+                      name = "department"                      
+                      onChange={this.onChange} >
+                      {this.fetchDepartments().map( element => 
+                        <option
+                          key = {element.c_digo_dane_del_departamento}
+                          value = {element.departamento}> {element.departamento}
+                        </option>
+                      )}
+                    </select>
+                  </fieldset>
+
+                  <fieldset className="form-group">
+                    <label for="city">Ciudad</label>
+                    <select
+                      className="form-control"
+                      value={this.state.city}
+                      required
+                      name = "city"
+                      onChange={this.onChange}>
+                        {this.filterRegionListByState(this.state.department).map( el => 
+                          <option
+                            key = {el.c_digo_dane_del_municipio}
+                            value = {el.municipio}> {el.municipio} 
+                          </option> 
+                        )}
+                    </select>
+                  </fieldset>
+
+                  <fieldset className="form-group">
+                    <input
+                      className="form-control"
+                      type="text"
+                      placeholder="Institución educativa"
+                      required
+                      name = "school"
+                      value={this.state.school}
+                      onChange={this.onChange} />
+                  </fieldset>
+                  
+                  <fieldset className="form-group">
+                    <input
+                      className="form-control"
+                      type="number"
+                      placeholder="Escalafón"
+                      required
+                      name = "teachingLadder"
+                      value={this.state.teachingLadder}
+                      onChange={this.onChange} />
+                  </fieldset>
+
+                  <fieldset className="form-group">
+                    <input
+                      className="form-control"
+                      type="number"
+                      placeholder="Área de nombramiento"
+                      required
+                      name = "appointmentArea"
+                      value={this.state.appointmentArea}
+                      onChange={this.onChange} />
+                  </fieldset>
+
+                  <fieldset className="form-group">
+                    <label for="barterDepartment">Departamento que desea la permuta</label>
+                    <select
+                      className="form-control"
+                      required
+                      value={this.state.barterDepartment}
+                      name = "barterDepartment"
+                      onChange={this.onChange}>
+                      {this.fetchDepartments().map( element => 
+                        <option 
+                          key = {element.c_digo_dane_del_departamento} 
+                          value = {element.departamento}> {element.departamento} 
+                        </option>
+                      )}
+                    </select>
                   </fieldset>
 
                   <button

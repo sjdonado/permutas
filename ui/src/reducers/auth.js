@@ -25,7 +25,9 @@ export default (state = {}, action) => {
       }
       break;
     case UPDATE_FIELD_AUTH:
-      return { ...state, [action.key]: action.value };
+      let {newUser} = state;
+      newUser[action.key] = action.value;      
+      return { ...state, newUser };
     default:
       return state;
   }
