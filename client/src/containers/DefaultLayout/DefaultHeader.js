@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Badge, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink } from 'reactstrap';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 
 import { AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import logo from '../../assets/img/brand/logo.svg'
@@ -13,11 +14,24 @@ const propTypes = {
 const defaultProps = {};
 
 class DefaultHeader extends Component {
-  render() {
+  constructor(props) {
+    super(props);
+    this.state = {
+      redirect: false
+    };
+  }
+  logout = e => {
+    localStorage.clear();
+    this.setState({ redirect: true });
+  }
 
+  render() {
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
 
+    if (this.state.redirect) {
+      return <Redirect to='/' />;
+    }
     return (
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
@@ -65,7 +79,7 @@ class DefaultHeader extends Component {
               <DropdownItem><i className="fa fa-file"></i> Projects<Badge color="primary">42</Badge></DropdownItem>
               <DropdownItem divider />
               <DropdownItem><i className="fa fa-shield"></i> Lock Account</DropdownItem>
-              <DropdownItem><i className="fa fa-lock"></i> Logout</DropdownItem>
+              <DropdownItem onClick={this.logout}><i className="fa fa-lock"></i> Logout</DropdownItem>
             </DropdownMenu>
           </AppHeaderDropdown>
         </Nav>
