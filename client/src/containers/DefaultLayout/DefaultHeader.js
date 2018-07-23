@@ -6,6 +6,8 @@ import { AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler }
 import logo from '../../assets/img/brand/logo.svg'
 import sygnet from '../../assets/img/brand/sygnet.svg'
 
+import { Redirect } from 'react-router-dom';
+
 const propTypes = {
   children: PropTypes.node,
 };
@@ -13,7 +15,18 @@ const propTypes = {
 const defaultProps = {};
 
 class DefaultHeader extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      auth: localStorage.getItem('token') != null
+    };
+  }
+  logout = () => {        
+    localStorage.clear();
+    this.setState({auth: false});
+  }
   render() {
+    if(!this.state.auth) return <Redirect to="/login"/>
 
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
@@ -65,7 +78,7 @@ class DefaultHeader extends Component {
               <DropdownItem><i className="fa fa-file"></i> Projects<Badge color="primary">42</Badge></DropdownItem>
               <DropdownItem divider />
               <DropdownItem><i className="fa fa-shield"></i> Lock Account</DropdownItem>
-              <DropdownItem><i className="fa fa-lock"></i> Logout</DropdownItem>
+              <DropdownItem onClick={this.logout}><i className="fa fa-lock"></i> Logout</DropdownItem>
             </DropdownMenu>
           </AppHeaderDropdown>
         </Nav>
