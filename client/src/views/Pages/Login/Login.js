@@ -37,7 +37,7 @@ class Login extends Component {
     Requests.post('/users/signin', doc)
       .then(res => {
         localStorage.setItem('token', res.data.meta.token);
-        <Redirect to="/" />
+        <Redirect to="/dashboard" />
       })
       .catch(err => {
         console.error(err);
