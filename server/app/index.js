@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const database = require('./database');
 const api = require('./api/v1/');
@@ -16,16 +17,13 @@ app.use(bodyParser.urlencoded({
 // parse application/json
 app.use(bodyParser.json());
 
+const staticFiles = express.static(path.join(__dirname, '../../client/build'));
+app.use(staticFiles);
+
 app.use('/api/v1', api);
 app.use('/api', api);
 
-app.use((req, res, next) => {
-  res.status(404);
-  res.json({
-    error: true,
-    message: 'Not found',
-  });
-});
+app.use('/*', staticFiles);
 
 app.use((err, req, res, next) => {
   let {
