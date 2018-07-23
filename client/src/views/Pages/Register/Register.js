@@ -106,9 +106,7 @@ class Register extends Component {
       toggle={this.onDismiss}>
       {this.state.alert.message}
     </Alert>
-    if (this.state.redirect) {
-      return <Redirect to='/' />;
-    }
+    if (this.state.redirect) return <Redirect to='/' />
     return (
       <div className="app flex-row align-items-center">
         <Container>
@@ -213,8 +211,8 @@ class Register extends Component {
                             type="select"
                             name="department"
                             value={this.state.department}
-                            onChange={this.onChange}>
-                            {this.fetchDepartments().map(element =>
+                            onChange={this.onChange}>                            
+                            {this.fetchDepartments().map( element =>
                               <option
                                 key={element.c_digo_dane_del_departamento}
                                 value={element.departamento}> {element.departamento}
@@ -307,14 +305,11 @@ class Register extends Component {
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
-                            type="select"
+                            type="text"
                             name="region"
                             value={this.state.region}
                             placeholder={"Región"}
                             onChange={this.onChange}>
-                            <option value="">Ningúno</option>
-                            <option value="vereda">Vereda</option>
-                            <option value="corregimiento">Corregimiento</option>
                           </Input>
                         </InputGroup>
                       </Col>
@@ -340,7 +335,13 @@ class Register extends Component {
                       </Input>
                     </InputGroup>
 
-                    <Button type="submit" color="success" block>Crear cuenta</Button>
+                    <Button
+                      type="submit"
+                      color="success"
+                      onClick={this.onSubmit}
+                      block>
+                        Crear cuenta
+                      </Button>
                   </form>
 
                 </CardBody>
