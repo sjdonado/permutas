@@ -6,6 +6,9 @@
   "license": "MIT",
   "private": true,
   "proxy": "http://localhost:3001",
+  "engines": {
+    "node": "10.7.0"
+  },
   "dependencies": {
     "@coreui/coreui": "^2.0.4",
     "@coreui/coreui-plugin-chartjs-custom-tooltips": "^1.2.0",
