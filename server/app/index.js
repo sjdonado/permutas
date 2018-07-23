@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({
 // parse application/json
 app.use(bodyParser.json());
 
-const staticFiles = express.static(path.join(__dirname, '../../client/build'));
+const staticFiles = express.static(path.join(__dirname, '../../../client/build'));
 app.use(staticFiles);
 
 app.use('/api/v1', api);
