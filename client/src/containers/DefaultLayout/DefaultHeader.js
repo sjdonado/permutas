@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import { Badge, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink } from 'reactstrap';
+import { DropdownItem, DropdownMenu, DropdownToggle, Nav } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 import { AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import logo from '../../assets/img/brand/logo.svg'
 import sygnet from '../../assets/img/brand/sygnet.svg'
-
-import { Redirect } from 'react-router-dom';
 
 const propTypes = {
   children: PropTypes.node,
@@ -32,7 +30,7 @@ class DefaultHeader extends Component {
     const { children, ...attributes } = this.props;
 
     if(!this.state.auth) return <Redirect to="/login"/>
-    
+
     return (
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
