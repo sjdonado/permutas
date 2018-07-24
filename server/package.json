@@ -1,6 +1,6 @@
 {
   "name": "server",
-  "version": "1.0.0",
+  "version": "1.7.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "engines": {
-    "node": "10.7.0"
+    "node": "8.11.3"
   },
   "dependencies": {
     "babel-cli": "^6.22.2",

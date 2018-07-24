@@ -9906,5 +9906,8 @@ a:not([href]):not([tabindex]) {
   color: #20a8d8;
   cursor: pointer; }
 
+.teachers-row {
+  margin-top: 20px; }
+
 html body .app.flex-row.align-items-center {
   height: 100vh; }

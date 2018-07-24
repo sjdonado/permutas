@@ -48,24 +48,32 @@ class Users extends Component {
       userDetailsModal: !this.state.userDetailsModal,
       currentUser: newUser
     });
-    console.log(this.state.currentUser);
   }
 
-  updateUserInfo = user => {
-    console.log(user);
-    const userId = user._id;
-    ['_id', '__v', 'createdAt', 'updatedAt', 'edit', 'editMessage'].forEach((field) => {
-      if (Object.hasOwnProperty.call(user, field)) {
-        delete user[field];
-      }
-    });
-    Requests.put(`/users/${userId}`, user)
+  updateUser = e => {
+    Requests.put(`/users/${this.state.currentUser._id}`, this.state.currentUser)
       .then(res => {
+        this.setState({ userDetailsModal: false });
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
+  deleteUser = e => {
+    Requests.delete(`/users/${this.state.currentUser._id}`)
+      .then(res => {
+        this.setState({ userDetailsModal: false });
         this.getUsers();
       })
       .catch(err => {
         console.error(err);
       });
+  }
+
+  newData = data => {
+    const updatedCurrentUser = Object.assign(this.state.currentUser, data);
+    this.setState({ currentUser: updatedCurrentUser });
   }
 
   getUsers() {
@@ -83,7 +91,7 @@ class Users extends Component {
   render() {
     return (
       <div className="animated fadeIn">
-        <Row>
+        <Row className="teachers-row">
           <Col xl={12}>
             <Card>
               <CardHeader>
@@ -110,7 +118,7 @@ class Users extends Component {
             </Card>
           </Col>
         </Row>
-        {this.state.userDetailsModal && <UserModal open={this.state.userDetailsModal} toggle={this.toggleUserDetailsModal} user={this.state.currentUser} updateUserInfo={this.updateUserInfo} />}
+        {this.state.userDetailsModal && <UserModal open={this.state.userDetailsModal} toggle={this.toggleUserDetailsModal} user={this.state.currentUser} updateUser={this.updateUser} newData={this.newData} deleteUser={this.deleteUser} />}
       </div>
     )
   }
