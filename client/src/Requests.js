@@ -13,12 +13,18 @@ const request = axios.create({
 );
 
 const Requests = {
+  get(endpoint) {
+    return request.get(endpoint);
+  },
   post(endpoint, data) {
     return request.post(endpoint, data);
   },
-  get(endpoint) {
-    return request.get(endpoint);
-  }
+  put(endpoint, data) {
+    return request.put(endpoint, data);
+  },
+  delete(endpoint) {
+    return request.delete(endpoint);
+  },
 }
 
 export default Requests;

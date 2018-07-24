@@ -25,7 +25,7 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <Switch>          
+        <Switch>
           <Route exact path="/login" name="Login Page" component={Login} />
           <Route exact path="/register" name="Register Page" component={Register} />
           <Route exact path="/404" name="Page 404" component={Page404} />

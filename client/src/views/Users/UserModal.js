@@ -6,11 +6,23 @@ class UserModal extends React.Component {
     super(props);
     console.log(this.props.user);
     this.state = {
-      edit: false
+      ...this.props.user,
+      edit: false,
+      editMessage: 'Editar',
     }
+    console.log(this.state);
   }
   handleEdit = e => {
-    this.setState(prevState => { edit: !prevState.edit });
+    if (this.state.edit) {
+      this.setState({ edit: !this.state.edit, editMessage: 'Editar' });
+      this.props.updateUserInfo(this.state);
+    } else {
+      this.setState({ edit: !this.state.edit, editMessage: 'Guardar' });
+    }
+  }
+
+  editUserInfo = e => {
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   render() {
@@ -30,17 +42,17 @@ class UserModal extends React.Component {
             </thead>
             <tbody>
               <tr>
-                <td>{this.state.edit ? <input type="text" name="fullname" value={this.props.user.fullname}></input> : this.props.user.fullname}</td>
-                <td>{this.props.user.dni}</td>
-                <td>{this.props.user.email}</td>
-                <td>{this.props.user.mobilePhone}</td>
-                <td>{this.props.user.phone}</td>
+                <td>{this.state.edit ? <input type="text" name="fullname" value={this.state.fullname} onChange={this.editUserInfo}></input> : this.state.fullname}</td>
+                <td>{this.state.dni}</td>
+                <td>{this.state.email}</td>
+                <td>{this.state.mobilePhone}</td>
+                <td>{this.state.phone}</td>
               </tr>
             </tbody>
           </Table>
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={this.props.handleEdit}>Editar</Button>
+          <Button color="primary" onClick={this.handleEdit}>{this.state.editMessage}</Button>
           <Button color="secondary" onClick={this.props.toggle}>Cancelar</Button>
         </ModalFooter>
       </Modal>
