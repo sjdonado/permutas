@@ -4,7 +4,6 @@ import {
   Button,
   Card,
   CardBody,
-  CardFooter,
   Col,
   Container,
   Input,
@@ -12,7 +11,6 @@ import {
   InputGroupAddon,
   InputGroupText,
   Row,
-  Label,
   Alert
 } from 'reactstrap';
 import { COLOMBIA_TEACHING_LADDER, COLOMBIA_REGION_LIST } from '../../../complements/Colombia';

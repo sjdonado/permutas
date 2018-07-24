@@ -58,7 +58,7 @@ exports.all = (req, res, next) => {
   } = filterByNested(params, referencesNames);
 
 
-  const count = Model.count();
+  const count = Model.countDocuments();
   const all = Model
     .find(filters)
     .sort(sort)
@@ -140,7 +140,7 @@ exports.create = (req, res, next) => {
   Escalafón: ${userDoc.educationalLadder}
   Área de nombramiento: ${userDoc.appointment}`;
 
-  Object.assign(body, { ownerId: doc.id, text: `Te ha contactado el usuario ${userDoc.username}. ${info}` });
+  Object.assign(body, { ownerId: doc.id, text: `Te ha contactado el usuario ${userDoc.fullname}. ${info}` });
 
   const document = new Model(body);
   document.save()

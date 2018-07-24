@@ -14,5 +14,10 @@ export default {
         text: '5',
       },
     },
+    {
+      name: 'Docentes',
+      url: '/users',
+      icon: 'icon-people',
+    },
   ],
 };

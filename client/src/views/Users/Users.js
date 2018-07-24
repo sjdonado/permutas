@@ -1,28 +1,16 @@
 import React, { Component } from 'react';
-import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 import UserModal from './UserModal';
 import Requests from '../../Requests';
 
 function UserRow(props) {
-  const user = props.user
-  const userLink = `#/users/${user._id}`
-
-  const getBadge = (status) => {
-    return status === 'Active' ? 'success' :
-      status === 'Inactive' ? 'secondary' :
-        status === 'Pending' ? 'warning' :
-          status === 'Banned' ? 'danger' :
-            'primary'
-  }
-
   return (
-    <tr key={user._id}>
-      <th scope="row"><a onClick={e => props.onClick(user)}>{user.fullname}</a></th>
-      <td>{user.dni}</td>
-      <td>{user.email}</td>
-      <td>{user.phone}</td>
-      <td>{user.mobilePhone}</td>
-      {/* <td><Badge href={userLink} color={getBadge(user.status)}>{user.status}</Badge></td> */}
+    <tr key={props.user._id}>
+      <th scope="row"><a onClick={e => props.onClick(props.user)}>{props.user.fullname}</a></th>
+      <td>{props.user.dni}</td>
+      <td>{props.user.email}</td>
+      <td>{props.user.phone}</td>
+      <td>{props.user.mobilePhone}</td>
     </tr>
   )
 }
@@ -38,7 +26,7 @@ class Users extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.getUsers();
   }
 
@@ -54,6 +42,7 @@ class Users extends Component {
     Requests.put(`/users/${this.state.currentUser._id}`, this.state.currentUser)
       .then(res => {
         this.setState({ userDetailsModal: false });
+        console.log('MANIYA');
       })
       .catch(err => {
         console.error(err);
@@ -91,7 +80,7 @@ class Users extends Component {
   render() {
     return (
       <div className="animated fadeIn">
-        <Row className="teachers-row">
+        <Row>
           <Col xl={12}>
             <Card>
               <CardHeader>

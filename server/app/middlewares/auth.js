@@ -40,6 +40,7 @@ const signToken = (payload, expiresIn = '12h') => jwt.sign(payload, config.jwt.s
 });
 
 const authFailed = (req, res, next) => {
+  res.status(403);
   res.json({
     success: false,
     message: 'Email or password does not match',
