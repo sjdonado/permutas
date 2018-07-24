@@ -46,3 +46,7 @@ div.scrollbar-container.sidebar-nav.ps{
   border-bottom: 0px;
 }
 
+a:not([href]):not([tabindex]) {
+  color: $blue;
+  cursor: pointer;
+}
