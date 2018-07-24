@@ -87,8 +87,7 @@ class Register extends Component {
       appointment: state.appointmentArea,
       swapDepartment: state.barterDepartment
     }
-    if (!state.region.isEmpty())
-      doc.region = state.region;
+    if (!state.region) doc.region = state.region;
     Requests.post('/users', doc)
       .then(res => {
         console.log(res);
@@ -211,8 +210,8 @@ class Register extends Component {
                             type="select"
                             name="department"
                             value={this.state.department}
-                            onChange={this.onChange}>                            
-                            {this.fetchDepartments().map( element =>
+                            onChange={this.onChange}>
+                            {this.fetchDepartments().map(element =>
                               <option
                                 key={element.c_digo_dane_del_departamento}
                                 value={element.departamento}> {element.departamento}
@@ -340,7 +339,7 @@ class Register extends Component {
                       color="success"
                       onClick={this.onSubmit}
                       block>
-                        Crear cuenta
+                      Crear cuenta
                       </Button>
                   </form>
 

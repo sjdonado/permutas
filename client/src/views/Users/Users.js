@@ -39,15 +39,7 @@ class Users extends Component {
   }
 
   componentWillMount() {
-    Requests.get('/users/all')
-      .then(res => {
-        this.setState({
-          usersData: res.data.items
-        })
-      })
-      .catch(err => {
-        console.error(err);
-      });
+    this.getUsers();
   }
 
   toggleUserDetailsModal = user => {
@@ -57,6 +49,35 @@ class Users extends Component {
       currentUser: newUser
     });
     console.log(this.state.currentUser);
+  }
+
+  updateUserInfo = user => {
+    console.log(user);
+    const userId = user._id;
+    ['_id', '__v', 'createdAt', 'updatedAt', 'edit', 'editMessage'].forEach((field) => {
+      if (Object.hasOwnProperty.call(user, field)) {
+        delete user[field];
+      }
+    });
+    Requests.put(`/users/${userId}`, user)
+      .then(res => {
+        this.getUsers();
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
+  getUsers() {
+    Requests.get('/users/all')
+      .then(res => {
+        this.setState({
+          usersData: res.data.items
+        })
+      })
+      .catch(err => {
+        console.error(err);
+      });
   }
 
   render() {
@@ -89,7 +110,7 @@ class Users extends Component {
             </Card>
           </Col>
         </Row>
-        {this.state.userDetailsModal && <UserModal open={this.state.userDetailsModal} toggle={this.toggleUserDetailsModal} user={this.state.currentUser} />}
+        {this.state.userDetailsModal && <UserModal open={this.state.userDetailsModal} toggle={this.toggleUserDetailsModal} user={this.state.currentUser} updateUserInfo={this.updateUserInfo} />}
       </div>
     )
   }

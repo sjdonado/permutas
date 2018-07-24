@@ -19,7 +19,6 @@ exports.id = (req, res, next) => {
       .then((doc) => {
         if (doc) {
           req.doc = doc;
-          console.log(doc);
           next();
         } else {
           res.json({
@@ -34,6 +33,24 @@ exports.id = (req, res, next) => {
   } else {
     next();
   }
+};
+
+exports.externalId = (req, res, next, id) => {
+  Model.findById(id)
+    .then((doc) => {
+      if (doc) {
+        req.doc = doc;
+        next();
+      } else {
+        res.json({
+          sucess: false,
+          message: `${Model.modelName} not found`,
+        });
+      }
+    })
+    .catch((err) => {
+      next(new Error(err));
+    });
 };
 
 exports.all = (req, res, next) => {
