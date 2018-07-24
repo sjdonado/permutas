@@ -57,11 +57,10 @@ exports.all = (req, res, next) => {
     populate,
   } = filterByNested(params, referencesNames);
 
-  const globalFilters = Object.assign(filters, { kind: 'global' });
 
   const count = Model.count();
   const all = Model
-    .find(globalFilters)
+    .find(filters)
     .sort(sort)
     .skip(skip)
     .limit(limit)

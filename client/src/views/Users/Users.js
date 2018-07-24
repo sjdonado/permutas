@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import UserModal from './UserModal';
 import Requests from '../../Requests';
 
 function UserRow(props) {
@@ -16,7 +17,7 @@ function UserRow(props) {
 
   return (
     <tr key={user._id}>
-      <th scope="row"><a href={userLink}>{user.fullname}</a></th>
+      <th scope="row"><a onClick={e => props.onClick(user)}>{user.fullname}</a></th>
       <td>{user.dni}</td>
       <td>{user.email}</td>
       <td>{user.phone}</td>
@@ -31,7 +32,9 @@ class Users extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      usersData: []
+      usersData: [],
+      userDetailsModal: false,
+      currentUser: {}
     }
   }
 
@@ -45,6 +48,15 @@ class Users extends Component {
       .catch(err => {
         console.error(err);
       });
+  }
+
+  toggleUserDetailsModal = user => {
+    const newUser = this.state.user ? {} : user;
+    this.setState({
+      userDetailsModal: !this.state.userDetailsModal,
+      currentUser: newUser
+    });
+    console.log(this.state.currentUser);
   }
 
   render() {
@@ -69,7 +81,7 @@ class Users extends Component {
                   </thead>
                   <tbody>
                     {this.state.usersData.map((user, index) =>
-                      <UserRow key={index} user={user} />
+                      <UserRow key={index} user={user} onClick={this.toggleUserDetailsModal} />
                     )}
                   </tbody>
                 </Table>
@@ -77,6 +89,7 @@ class Users extends Component {
             </Card>
           </Col>
         </Row>
+        {this.state.userDetailsModal && <UserModal open={this.state.userDetailsModal} toggle={this.toggleUserDetailsModal} user={this.state.currentUser} />}
       </div>
     )
   }
