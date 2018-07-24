@@ -9901,6 +9901,7 @@ button.sidebar-minimizer {
 
 div.scrollbar-container.sidebar-nav.ps {
   border-bottom: 0px; }
+
 a:not([href]):not([tabindex]) {
   color: #20a8d8;
   cursor: pointer; }
