@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { API_URL } from './Config';
-const USER_TOKEN = localStorage.getItem('token');
 const BASE = new URL(API_URL);
 
 const request = axios.create({
@@ -8,7 +7,7 @@ const request = axios.create({
   headers: {
     'Content-Type': 'application/json',
     'X-Requested-With': 'XMLHttpRequest',
-    'Authorization': USER_TOKEN
+    'Authorization': localStorage.getItem('token')
   }
 }
 );
@@ -16,6 +15,9 @@ const request = axios.create({
 const Requests = {
   post(endpoint, data) {
     return request.post(endpoint, data);
+  },
+  get(endpoint) {
+    return request.get(endpoint);
   }
 }
 

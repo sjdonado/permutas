@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 
-import usersData from './UsersData'
-
 class User extends Component {
 
-  constructor(props) {
-    super(props);
-    console.log(JSON.parse(localStorage.getItem('user'))._id);
-  }
-
   render() {
-    const user = usersData.find(user => user.id.toString() === JSON.parse(localStorage.getItem('user'))._id)
+    const user = this.props.usersData.find(user => user._id === this.props.match.params.id)
 
     const userDetails = user ? Object.entries(user) : [['id', (<span><i className="text-muted icon-ban"></i> Not found</span>)]]
 
@@ -21,7 +14,7 @@ class User extends Component {
           <Col lg={12}>
             <Card>
               <CardHeader>
-                <strong><i className="icon-info pr-1"></i>User id: {JSON.parse(localStorage.getItem('user'))._id}</strong>
+                <strong><i className="icon-info pr-1"></i>User id: {this.props.match.params.id}</strong>
               </CardHeader>
               <CardBody>
                 <Table responsive striped hover>

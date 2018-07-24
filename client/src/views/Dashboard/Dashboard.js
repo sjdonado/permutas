@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
-import User from '../Users/User'
+import Users from '../Users/Users'
 
 class Dashboard extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   render() {
     return (
-      <User />
+      <Users />
     );
   }
 }
