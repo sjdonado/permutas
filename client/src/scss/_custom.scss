@@ -1,1 +1,31 @@
 // Here you can add other styles
+.app-header .nav-item .nav-link > .img-avatar, .app-header .nav-item .avatar.nav-link > img {
+  margin: 0 20px;
+}
+
+.sidebar .sidebar-nav, .sidebar .nav-item {
+  background-color: $white;
+  color: #73818f;
+  border-bottom: 1px solid $light;
+}
+
+.sidebar .nav-item a {
+  color: #73818f;
+}
+
+.sidebar .nav-item a:hover {
+  background-color: $light;
+  color: $dark;
+}
+
+.sidebar .nav-item a:hover .nav-icon:not(:hover) {
+  color: $dark;
+}
+
+.sidebar .nav-link.active {
+  background: $blue;
+}
+
+.sidebar .nav-link.active .nav-icon {
+  color: white;
+}

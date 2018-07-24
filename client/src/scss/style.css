@@ -9866,5 +9866,29 @@ body {
 .app-header .navbar-nav .dropdown-menu-right {
   right: auto; }
 
+.app-header .nav-item .nav-link > .img-avatar, .app-header .nav-item .avatar.nav-link > img, .app-header .nav-item .avatar.nav-link > img {
+  margin: 0 20px; }
+
+.sidebar .sidebar-nav, .sidebar .nav-item {
+  background-color: #fff;
+  color: #73818f;
+  border-bottom: 1px solid #f0f3f5; }
+
+.sidebar .nav-item a {
+  color: #73818f; }
+
+.sidebar .nav-item a:hover {
+  background-color: #f0f3f5;
+  color: #2f353a; }
+
+.sidebar .nav-item a:hover .nav-icon:not(:hover) {
+  color: #2f353a; }
+
+.sidebar .nav-link.active {
+  background: #20a8d8; }
+
+.sidebar .nav-link.active .nav-icon {
+  color: white; }
+
 html body .app.flex-row.align-items-center {
   height: 100vh; }
