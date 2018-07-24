@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch, BrowserRouter } from 'react-router-dom';
 import PrivateRoute from './complements/PrivateRoute';
 import './App.css';
 // Styles
@@ -24,7 +24,7 @@ import { Login, Page404, Page500, Register } from './views/Pages';
 class App extends Component {
   render() {
     return (
-      <HashRouter>
+      <BrowserRouter>
         <Switch>          
           <Route exact path="/login" name="Login Page" component={Login} />
           <Route exact path="/register" name="Register Page" component={Register} />
@@ -32,7 +32,7 @@ class App extends Component {
           <Route exact path="/500" name="Page 500" component={Page500} />
           <PrivateRoute path="/" name="Home" component={DefaultLayout} />
         </Switch>
-      </HashRouter>
+      </BrowserRouter>
     );
   }
 }
