@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
-
-import usersData from './UsersData'
+import Requests from '../../Requests';
 
 function UserRow(props) {
   const user = props.user
-  const userLink = `#/users/${user.id}`
+  const userLink = `#/users/${user._id}`
 
   const getBadge = (status) => {
     return status === 'Active' ? 'success' :
@@ -16,44 +15,61 @@ function UserRow(props) {
   }
 
   return (
-    <tr key={user.id.toString()}>
-        <th scope="row"><a href={userLink}>{user.id}</a></th>
-        <td><a href={userLink}>{user.name}</a></td>
-        <td>{user.registered}</td>
-        <td>{user.role}</td>
-        <td><Badge href={userLink} color={getBadge(user.status)}>{user.status}</Badge></td>
+    <tr key={user._id}>
+      <th scope="row"><a href={userLink}>{user.fullname}</a></th>
+      <td>{user.dni}</td>
+      <td>{user.email}</td>
+      <td>{user.phone}</td>
+      <td>{user.mobilePhone}</td>
+      {/* <td><Badge href={userLink} color={getBadge(user.status)}>{user.status}</Badge></td> */}
     </tr>
   )
 }
 
 class Users extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      usersData: []
+    }
+  }
+
+  componentWillMount() {
+    Requests.get('/users/all')
+      .then(res => {
+        this.setState({
+          usersData: res.data.items
+        })
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
+
   render() {
-
-    const userList = usersData.filter((user) => user.id < 10)
-
     return (
       <div className="animated fadeIn">
         <Row>
-          <Col xl={6}>
+          <Col xl={12}>
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"></i> Users <small className="text-muted">example</small>
+                <i className="fa fa-align-justify"></i> Docentes
               </CardHeader>
               <CardBody>
                 <Table responsive hover>
                   <thead>
                     <tr>
-                      <th scope="col">id</th>
-                      <th scope="col">name</th>
-                      <th scope="col">registered</th>
-                      <th scope="col">role</th>
-                      <th scope="col">status</th>
+                      <th scope="col">Nombre</th>
+                      <th scope="col">Número de identificación</th>
+                      <th scope="col">Correo electrónico</th>
+                      <th scope="col">Telefono</th>
+                      <th scope="col">Celular</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {userList.map((user, index) =>
-                      <UserRow key={index} user={user}/>
+                    {this.state.usersData.map((user, index) =>
+                      <UserRow key={index} user={user} />
                     )}
                   </tbody>
                 </Table>
