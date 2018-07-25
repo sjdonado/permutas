@@ -39,11 +39,7 @@ class DefaultLayout extends Component {
       {
         name: 'Mensajes',
         url: '/messages',
-        icon: 'icon-speech',
-        badge: {
-          variant: 'info',
-          text: '5',
-        },
+        icon: 'icon-speech'
       }
     ];
 

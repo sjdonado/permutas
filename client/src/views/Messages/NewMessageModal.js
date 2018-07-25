@@ -18,6 +18,8 @@ class NewMessageModal extends React.Component {
 
     Requests.post('/messages/global', this.props.token, data)
       .then(res => {
+        console.log(res);
+        this.props.addNewMessage(res);
         this.props.toggle();
       })
       .catch(err => console.error(err))

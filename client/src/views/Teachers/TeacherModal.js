@@ -35,7 +35,7 @@ class TeacherModal extends React.Component {
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={this.updateUser}>Guardar</Button>
-          <Button color="danger" onClick={this.deleteUser}>Eliminar</Button>
+          {this.props.user.role === "admin" && <Button color="danger" onClick={this.deleteUser}>Eliminar</Button>}
           <Button color="secundary" onClick={this.props.toggle}>Salir</Button>
         </ModalFooter>
       </Modal>

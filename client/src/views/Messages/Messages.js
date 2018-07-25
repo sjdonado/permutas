@@ -22,7 +22,7 @@ class Messages extends Component {
   fetchMessages = () => {
     Requests.get(MESSAGES_ENDPOINT, this.props.token)
       .then(res => {
-        let items = res.data.items;
+        let items = res.items;
         let { messages } = this.state;
         if (items.length > 0) {
           messages.push(...items);
@@ -37,9 +37,12 @@ class Messages extends Component {
       this.setState({ messages: [] });
       this.fetchMessages();
     }
-    this.setState({
-      messageModal: !this.state.messageModal,
-    });
+  }
+
+  addNewMessage = newMessage => {
+    this.setState(prevState => ({
+      messages: [...prevState.messages, newMessage]
+    }));
   }
 
   formatDate = date => {
@@ -83,7 +86,7 @@ class Messages extends Component {
             </Card>
           </Col>
         </Row>
-        {this.state.messageModal && <NewMessageModal open={this.state.messageModal} toggle={this.toggleMessageModal} {...this.props} />}
+        {this.state.messageModal && <NewMessageModal open={this.state.messageModal} toggle={this.toggleMessageModal} addNewMessage={this.addNewMessage} {...this.props} />}
       </div>
     )
   }

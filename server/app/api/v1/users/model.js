@@ -73,6 +73,12 @@ const fields = {
     type: String,
     default: 'teacher',
   },
+  contacted: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+    },
+  ],
 };
 
 const user = new Schema(fields, {
@@ -106,6 +112,10 @@ user.methods.verifyPassword = function verifyPassword(password) {
 
 user.methods.isAdmin = function isAdmin() {
   return this.role === 'admin';
+};
+
+user.methods.newContacted = function newContacted(id) {
+  return this.contacted.push(mongoose.Types.ObjectId(id));
 };
 
 module.exports = {

@@ -34,8 +34,8 @@ class Login extends Component {
     Requests.post('/users/signin', this.props.token, doc)
       .then(res => {
         console.log(res);
-        this.props.saveUser(res.data.item);
-        this.props.saveToken(res.data.meta.token);
+        this.props.saveUser(res.item);
+        this.props.saveToken(res.meta.token);
         console.log('TOKEN', this.props.token);
       })
       .catch(err => {

@@ -82,7 +82,6 @@ class RegisterForm extends Component {
             </InputGroup>
           </Col>
         </Row>
-
         <Row>
           <Col md="6">
             <InputGroup className="mb-3">

@@ -45,7 +45,7 @@ class Teachers extends Component {
     Requests.get('/users/all', this.props.token)
       .then(res => {
         this.setState({
-          usersData: res.data.items
+          usersData: res.items
         })
       })
       .catch(err => {

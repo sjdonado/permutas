@@ -9906,12 +9906,17 @@ a:not([href]):not([tabindex]) {
   color: #20a8d8;
   cursor: pointer; }
 
-.card {
+.card, .list-group {
   margin-top: 20px; }
 
 .new-message {
   margin-top: 20px;
   float: right; }
+
+.contact-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px; }
 
 html body .app.flex-row.align-items-center {
   height: 100vh; }

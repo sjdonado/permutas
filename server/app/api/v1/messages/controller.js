@@ -40,6 +40,7 @@ exports.all = (req, res, next) => {
   const {
     query,
     params = {},
+    doc,
   } = req;
 
   const {
@@ -53,13 +54,14 @@ exports.all = (req, res, next) => {
   } = parseSortParams(query, fields);
   const sort = compactSortToStr(sortBy, direction);
   const {
-    filters,
+    // filters,
     populate,
   } = filterByNested(params, referencesNames);
 
+  console.log('ID', doc.id);
   const count = Model.countDocuments();
   const all = Model
-    .find({ ...filters, kind: 'global' })
+    .find({ $or: [{ userId: doc.id }, { kind: 'global' }] })
     .sort(sort)
     .skip(skip)
     .limit(limit)
@@ -142,7 +144,10 @@ exports.create = (req, res, next) => {
   Object.assign(body, { ownerId: doc.id, title: `Te ha contactado el usuario ${userDoc.fullname}`, text: info });
 
   const document = new Model(body);
-  document.save()
+  console.log(doc);
+  doc.newContacted(body.userId);
+
+  Promise.all([document.save(), doc.save()])
     .then((response) => {
       res.status(201);
       res.json({
