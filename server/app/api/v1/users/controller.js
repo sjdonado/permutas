@@ -71,6 +71,7 @@ exports.all = (req, res, next) => {
   const sort = compactSortToStr(sortBy, direction);
 
   const filters = [{ _id: { $ne: doc.id }, ...query }];
+  console.log(query);
 
   const count = Model.countDocuments();
   const all = Model

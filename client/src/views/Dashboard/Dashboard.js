@@ -10,8 +10,7 @@ class Dashboard extends Component {
       department: '',
       municipality: '',
       educationalLadder: '',
-      swapDepartment: '',
-      checkValues: []
+      appointment: '',
     };
   }
   componentDidMount() {
@@ -54,10 +53,10 @@ class Dashboard extends Component {
   }
   filter = e => {
     let filters = "?";
-    if (this.state.checkValues.indexOf('department') > -1) filters += `department=${this.state.department}&`;
-    if (this.state.checkValues.indexOf('municipality') > -1) filters += `municipality=${this.state.municipality}&`;
-    if (this.state.checkValues.indexOf('educationalLadder') > -1) filters += `educationalLadder=${this.state.educationalLadder}&`;
-    if (this.state.checkValues.indexOf('swapDepartment') > -1) filters += `swapDepartment=${this.state.swapDepartment}&`;
+    if (this.state.department.length > 0) filters += `department=${this.state.department}&`;
+    if (this.state.municipality.length > 0) filters += `municipality=${this.state.municipality}&`;
+    if (this.state.educationalLadder.length > 0) filters += `educationalLadder=${this.state.educationalLadder}&`;
+    if (this.state.appointment.length > 0) filters += `appointment=${this.state.appointment}&`;
     console.log(filters);
     this.getUsers(filters);
   }
@@ -69,61 +68,45 @@ class Dashboard extends Component {
             <Row>
               <Col md="3">
                 <InputGroup className="mb-3">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <Input addon type="checkbox" aria-label="Filtrar por Departamento" name="department" value={this.state.checkValues.indexOf('department') > -1} onChange={this.handleCheck} />
-                    </InputGroupText>
-                  </InputGroupAddon>
                   <Input
                     type="text"
                     name="department"
                     placeholder="Departamento"
+                    className={this.state.department.length > 0 ? "input-success" : ""}
                     value={this.state.department}
                     onChange={this.onChange} />
                 </InputGroup>
               </Col>
               <Col md="3">
                 <InputGroup className="mb-3">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <Input addon type="checkbox" aria-label="Filtrar por Municipio" name="municipality" value={this.state.checkValues.indexOf('municipality') > -1} onChange={this.handleCheck} />
-                    </InputGroupText>
-                  </InputGroupAddon>
                   <Input
                     type="text"
                     name="municipality"
                     placeholder="Municipio"
+                    className={this.state.municipality.length > 0 ? "input-success" : ""}
                     value={this.state.municipality}
                     onChange={this.onChange} />
                 </InputGroup>
               </Col>
               <Col md="3">
                 <InputGroup className="mb-3">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <Input addon type="checkbox" aria-label="Filtrar por Escalafón" name="educationalLadder" value={this.state.checkValues.indexOf('educationalLadder') > -1} onChange={this.handleCheck} />
-                    </InputGroupText>
-                  </InputGroupAddon>
                   <Input
                     type="text"
                     name="educationalLadder"
                     placeholder="Escalafón"
+                    className={this.state.educationalLadder.length > 0 ? "input-success" : ""}
                     value={this.state.educationalLadder}
                     onChange={this.onChange} />
                 </InputGroup>
               </Col>
               <Col md="3">
                 <InputGroup className="mb-3">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText>
-                      <Input addon type="checkbox" aria-label="Filtrar por Área de nombramiento" name="swapDepartment" value={this.state.checkValues.indexOf('swapDepartment') > -1} onChange={this.handleCheck} />
-                    </InputGroupText>
-                  </InputGroupAddon>
                   <Input
                     type="text"
-                    name="swapDepartment"
+                    name="appointment"
                     placeholder="Área de nombramiento"
-                    value={this.state.swapDepartment}
+                    className={this.state.appointment.length > 0 ? "input-success" : ""}
+                    value={this.state.appointment}
                     onChange={this.onChange} />
                 </InputGroup>
               </Col>

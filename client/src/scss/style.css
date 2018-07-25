@@ -9921,5 +9921,11 @@ a:not([href]):not([tabindex]) {
 .filter-btn {
   float: right; }
 
+.input-success, .input-success:focus {
+  border-color: #4dbd74; }
+
+.list-group-item-heading {
+  margin-top: 15px; }
+
 html body .app.flex-row.align-items-center {
   height: 100vh; }
