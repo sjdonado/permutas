@@ -115,7 +115,7 @@ class Register extends Component {
                   <p className="text-muted">Crea tu cuenta</p>
                   <form>
                     <Row>
-                      <Col md="12">
+                      <Col md="6">
                         <InputGroup className="mb-3">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText>
@@ -127,6 +127,21 @@ class Register extends Component {
                             placeholder="Nombre completo"
                             name="name"
                             value={this.state.name}
+                            onChange={this.onChange} />
+                        </InputGroup>
+                      </Col>
+                      <Col md="6">
+                        <InputGroup className="mb-3">
+                          <InputGroupAddon addonType="prepend">
+                            <InputGroupText>
+                              #
+                            </InputGroupText>
+                          </InputGroupAddon>
+                          <Input
+                            type="number"
+                            placeholder="Cédula"
+                            name="name"
+                            value={this.state.dni}
                             onChange={this.onChange} />
                         </InputGroup>
                       </Col>
