@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row, Table, Button } from 'reactstrap';
 import TeacherModal from './TeacherModal';
 import Requests from '../../requests';
+import XLSX from 'xlsx';
 
 function TeacherRow(props) {
   return (
@@ -22,6 +23,7 @@ class Teachers extends Component {
     this.state = {
       usersData: [],
       teacherModal: false,
+      csvData: null
     }
     console.log('TEACHERS', props);
   }
@@ -53,9 +55,25 @@ class Teachers extends Component {
       });
   }
 
+  downloadExcel = e => {
+    const csvData = [];
+    csvData.push(Object.keys(this.state.usersData[0]).filter(key => key !== "contacted" && key !== "_id" && key !== "__v"));
+    this.state.usersData.forEach((item) => csvData.push(Object.values(item).filter((value, key) => key !== 3 && key !== 4 && key !== 18)));
+    console.log(csvData);
+    const ws = XLSX.utils.aoa_to_sheet(csvData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
+    XLSX.writeFile(wb, "teachers.xlsx");
+  }
+
   render() {
     return (
       <div className="animated fadeIn">
+        <Row>
+          <Col lg={12}>
+            <Button color="primary" className="new-message" onClick={this.downloadExcel}>Descargar excel</Button>
+          </Col>
+        </Row>
         <Row>
           <Col xl={12}>
             <Card>

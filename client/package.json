@@ -36,7 +36,8 @@
     "react-scripts": "^1.1.4",
     "react-test-renderer": "^16.4.1",
     "reactstrap": "^6.1.0",
-    "simple-line-icons": "^2.4.1"
+    "simple-line-icons": "^2.4.1",
+    "xlsx": "^0.13.3"
   },
   "devDependencies": {},
   "scripts": {
