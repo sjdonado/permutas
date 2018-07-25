@@ -3,7 +3,7 @@ import {
   createStore,
 } from 'redux';
 
-// actions.js
+// Actions
 export const saveUser = user => ({
   type: 'SAVE_USER',
   user,
@@ -32,7 +32,7 @@ export const deleteCurrentUser = currentUser => ({
   currentUser,
 });
 
-// reducers.js
+// Reducers
 export const user = (state = {}, action) => {
   switch (action.type) {
     case 'SAVE_USER':
@@ -56,7 +56,6 @@ export const token = (state = null, action) => {
 };
 
 export const currentUser = (state = null, action) => {
-  console.log('REDUCER', action.currentUser);
   switch (action.type) {
     case 'SAVE_CURRENT_USER':
       return action.currentUser;
@@ -73,7 +72,7 @@ export const reducers = combineReducers({
   currentUser
 });
 
-// store.js
+// Store
 export function configureStore(initialState = {}) {
   const store = createStore(reducers, initialState);
   return store;
