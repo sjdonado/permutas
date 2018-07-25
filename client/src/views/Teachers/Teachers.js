@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
-import UserModal from './UserModal';
-import Requests from '../../Requests';
+import TeacherModal from './TeacherModal';
+import Requests from '../../requests';
 
 function UserRow(props) {
   return (
@@ -39,7 +39,7 @@ class Users extends Component {
   }
 
   updateUser = e => {
-    Requests.put(`/users/${this.state.currentUser._id}`, this.state.currentUser)
+    Requests.put(`/users/${this.state.currentUser._id}`, this.props.token, this.state.currentUser)
       .then(res => {
         this.setState({ userDetailsModal: false });
         console.log('MANIYA');
@@ -50,7 +50,7 @@ class Users extends Component {
   }
 
   deleteUser = e => {
-    Requests.delete(`/users/${this.state.currentUser._id}`)
+    Requests.delete(`/users/${this.state.currentUser._id}`, this.props.token)
       .then(res => {
         this.setState({ userDetailsModal: false });
         this.getUsers();
@@ -66,7 +66,7 @@ class Users extends Component {
   }
 
   getUsers() {
-    Requests.get('/users/all')
+    Requests.get('/users/all', this.props.token)
       .then(res => {
         this.setState({
           usersData: res.data.items
@@ -107,7 +107,7 @@ class Users extends Component {
             </Card>
           </Col>
         </Row>
-        {this.state.userDetailsModal && <UserModal open={this.state.userDetailsModal} toggle={this.toggleUserDetailsModal} user={this.state.currentUser} updateUser={this.updateUser} newData={this.newData} deleteUser={this.deleteUser} />}
+        {this.state.userDetailsModal && <TeacherModal open={this.state.userDetailsModal} toggle={this.toggleUserDetailsModal} user={this.state.currentUser} updateUser={this.updateUser} newData={this.newData} deleteUser={this.deleteUser} />}
       </div>
     )
   }

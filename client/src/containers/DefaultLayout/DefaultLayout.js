@@ -2,6 +2,15 @@ import React, { Component } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap';
 
+import { connect } from 'react-redux';
+
+import {
+  saveUser,
+  deleteUser,
+  saveToken,
+  deleteToken
+} from './../../redux';
+
 import {
   AppHeader,
   AppSidebar,
@@ -12,23 +21,51 @@ import {
   AppSidebarNav,
 } from '@coreui/react';
 // sidebar nav config
-import navigation from '../../_nav';
 // routes config
 import routes from '../../routes';
 import DefaultHeader from './DefaultHeader';
 
 class DefaultLayout extends Component {
+  constructor(props) {
+    super(props);
+    const items = [
+      {
+        name: 'Inicio',
+        url: '/dashboard',
+        icon: 'icon-home',
+      },
+      {
+        name: 'Mensajes',
+        url: '/messages',
+        icon: 'icon-speech',
+        badge: {
+          variant: 'info',
+          text: '5',
+        },
+      }
+    ];
+
+    if (props.user.role === 'admin')
+      items.push({
+        name: 'Docentes',
+        url: '/teachers',
+        icon: 'icon-people',
+      });
+    this.state = {
+      navigation: { items: items }
+    }
+  }
   render() {
     return (
       <div className="app">
         <AppHeader fixed>
-          <DefaultHeader />
+          <DefaultHeader {...this.props} />
         </AppHeader>
         <div className="app-body">
           <AppSidebar fixed display="lg">
             <AppSidebarHeader />
             <AppSidebarForm />
-            <AppSidebarNav navConfig={navigation} {...this.props} />
+            <AppSidebarNav navConfig={this.state.navigation} {...this.props} />
             <AppSidebarFooter />
             <AppSidebarMinimizer />
           </AppSidebar>
@@ -37,7 +74,7 @@ class DefaultLayout extends Component {
               <Switch>
                 {routes.map((route, idx) => {
                   return route.component ? (<Route key={idx} path={route.path} exact={route.exact} name={route.name} render={props => (
-                    <route.component {...props} />
+                    <route.component {...this.props} />
                   )} />)
                     : (null);
                 },
@@ -52,4 +89,19 @@ class DefaultLayout extends Component {
   }
 }
 
-export default DefaultLayout;
+const mapStateToProps = (state, ownProps) => ({
+  user: state.user,
+  token: state.token,
+});
+
+const mapDispatchToProps = {
+  saveUser,
+  deleteUser,
+  saveToken,
+  deleteToken,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DefaultLayout);

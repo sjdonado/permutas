@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
-import { Route, Switch, BrowserRouter } from 'react-router-dom';
-import PrivateRoute from './complements/PrivateRoute';
+import { Route, Switch, BrowserRouter, Redirect } from 'react-router-dom';
 import './App.css';
+
+import { connect } from 'react-redux';
+
+import {
+  saveUser,
+  deleteUser,
+  saveToken,
+  deleteToken
+} from './redux';
+
 // Styles
 // CoreUI Icons Set
 import '@coreui/icons/css/coreui-icons.min.css';
@@ -22,19 +31,35 @@ import { Login, Page404, Page500, Register } from './views/Pages';
 // import { renderRoutes } from 'react-router-config';
 
 class App extends Component {
-    render() {
-        return (
-            <BrowserRouter>
-                <Switch>
-                    <Route exact path="/login" name="Login Page" component={Login} />
-                    <Route exact path="/register" name="Register Page" component={Register} />
-                    <Route exact path="/404" name="Page 404" component={Page404} />
-                    <Route exact path="/500" name="Page 500" component={Page500} />
-                    <PrivateRoute path="/" name="Home" component={DefaultLayout} />
-                </Switch>
-            </BrowserRouter>
-        );
-    }
+  render() {
+    return (
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/login" name="Login Page" component={() => <Login {...this.props} />} />
+          <Route exact path="/register" name="Register Page" component={() => <Register {...this.props} />} />
+          <Route exact path="/404" name="Page 404" component={Page404} />
+          <Route exact path="/500" name="Page 500" component={Page500} />
+          <Route path="/" name="Home" render={props => this.props.token != null ? (<DefaultLayout {...props} />) : (<Redirect to="/login" />)} />
+          <Route path="/teachers" name="Teachers" render={props => this.props.user.role === 'admin' ? (<DefaultLayout {...props} />) : (<Redirect to="/dashboard" />)} />
+        </Switch>
+      </BrowserRouter>
+    );
+  }
 }
 
-export default App;
+const mapStateToProps = (state, ownProps) => ({
+  user: state.user,
+  token: state.token,
+});
+
+const mapDispatchToProps = {
+  saveUser,
+  deleteUser,
+  saveToken,
+  deleteToken,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

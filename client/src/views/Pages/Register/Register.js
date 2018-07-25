@@ -15,7 +15,7 @@ import {
 } from 'reactstrap';
 import { COLOMBIA_TEACHING_LADDER, COLOMBIA_REGION_LIST } from '../../../complements/Colombia';
 import _ from 'lodash';
-import Requests from '../../../Requests';
+import Requests from '../../../requests';
 
 class Register extends Component {
   constructor(props) {
@@ -86,7 +86,7 @@ class Register extends Component {
       swapDepartment: state.barterDepartment
     }
     if (!state.region) doc.region = state.region;
-    Requests.post('/users', doc)
+    Requests.post('/users', this.props.token, doc)
       .then(res => {
         console.log(res);
         this.setState({ redirect: true });

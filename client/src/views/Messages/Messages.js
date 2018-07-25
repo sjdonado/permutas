@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
-import Requests from '../../Requests';
+import Requests from '../../requests';
 
 const MESSAGES_ENDPOINT = "/messages";
 const DATE_FORMAT_CONFIG = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -18,20 +18,20 @@ class Messages extends Component {
   }
 
   fetchMessages = () => {
-    Requests.get(MESSAGES_ENDPOINT)
-      .then( res => {
+    Requests.get(MESSAGES_ENDPOINT, this.props.token)
+      .then(res => {
         let items = res.data.items;
-        let {messages} = this.state;
-        if(items.length > 0){
+        let { messages } = this.state;
+        if (items.length > 0) {
           messages.push(...items);
-          this.setState({messages});          
+          this.setState({ messages });
         }
       })
       .catch(err => console.error(err))
   }
 
   formatDate = date => {
-    return new Date(date).toLocaleDateString("es-US",DATE_FORMAT_CONFIG);
+    return new Date(date).toLocaleDateString("es-US", DATE_FORMAT_CONFIG);
   }
 
   render() {
@@ -48,16 +48,16 @@ class Messages extends Component {
                   <theader>
                     <tr>
                       <td>Mensaje</td>
-                      <td style={{width:"25%"}}>Emitido</td>
+                      <td style={{ width: "25%" }}>Emitido</td>
                     </tr>
                   </theader>
                   <tbody>
                     {
-                      this.state.messages.map( message =>                         
-                          <tr key={message._id}>
-                            <td style={{whiteSpace:"pre-line"}} >{message.text}</td>
-                            <td>{this.formatDate(message.createdAt)}</td>
-                          </tr>
+                      this.state.messages.map(message =>
+                        <tr key={message._id}>
+                          <td style={{ whiteSpace: "pre-line" }} >{message.text}</td>
+                          <td>{this.formatDate(message.createdAt)}</td>
+                        </tr>
                       )
                     }
                   </tbody>

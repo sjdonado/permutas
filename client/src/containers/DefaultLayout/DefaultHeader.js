@@ -14,22 +14,16 @@ const propTypes = {
 const defaultProps = {};
 
 class DefaultHeader extends Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      auth: localStorage.getItem('token') != null
-    };
+  logout = () => {
+    this.props.deleteToken();
+    this.props.deleteUser();
   }
-  logout = () => {        
-    localStorage.clear();
-    this.setState({auth: false});
-  }  
-    
+
   render() {
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
 
-    if(!this.state.auth) return <Redirect to="/login"/>
+    if (!this.props.token) return <Redirect to="/login" />
 
     return (
       <React.Fragment>
@@ -45,7 +39,7 @@ class DefaultHeader extends Component {
               <img src={'assets/img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
-              <DropdownItem header tag="div" className="text-center"><strong>{JSON.parse(localStorage.getItem('user')).fullname}</strong></DropdownItem>
+              <DropdownItem header tag="div" className="text-center"><strong>{this.props.user.fullname}</strong></DropdownItem>
               <DropdownItem><i className="fa fa-user"></i> Perfil</DropdownItem>
               <DropdownItem onClick={this.logout}><i className="fa fa-lock"></i> Cerrar sesión</DropdownItem>
             </DropdownMenu>

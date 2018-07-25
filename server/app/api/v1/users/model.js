@@ -75,7 +75,7 @@ const user = new Schema(fields, {
   timestamps: true,
 });
 
-const blacklistFields = ['password', 'role'];
+const blacklistFields = ['password'];
 // const cleanFields = ['password', 'role', '__v', 'createdAt', 'updatedAt', '_id'];
 
 

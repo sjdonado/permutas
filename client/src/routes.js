@@ -12,8 +12,8 @@ const Dashboard = Loadable({
   loading: Loading,
 });
 
-const Users = Loadable({
-  loader: () => import('./views/Users/Users'),
+const Teachers = Loadable({
+  loader: () => import('./views/Teachers/Teachers'),
   loading: Loading,
 });
 
@@ -26,8 +26,8 @@ const Messages = Loadable({
 const routes = [
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
-  { path: '/users', exact: true, name: 'Users', component: Users },
-  { path: '/messages/', exact: true, name: 'Messages', component: Messages }
+  { path: '/messages/', exact: true, name: 'Messages', component: Messages },
+  { path: '/teachers', exact: true, name: 'Teachers', component: Teachers }
 ];
 
 export default routes;
