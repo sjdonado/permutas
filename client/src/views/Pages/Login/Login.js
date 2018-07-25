@@ -44,6 +44,10 @@ class Login extends Component {
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   }
+
+  handleKeyPress = e => {
+    if(e.key === 'Enter') this.handleSubmit(e);
+  }
   render() {
     if (this.props.token) return <Redirect to='/' />;
     return (
@@ -62,7 +66,13 @@ class Login extends Component {
                           <i className="icon-user"></i>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input type="text" placeholder="Correo electrónico" name="email" onChange={this.onChange} value={this.state.email} />
+                      <Input
+                        type="text"
+                        placeholder="Correo electrónico"
+                        name="email"
+                        onChange={this.onChange}
+                        value={this.state.email}
+                        onKeyPress={this.handleKeyPress} />
                     </InputGroup>
                     <InputGroup className="mb-4">
                       <InputGroupAddon addonType="prepend">
@@ -70,11 +80,23 @@ class Login extends Component {
                           <i className="icon-lock"></i>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input type="password" placeholder="Contraseña" name="password" onChange={this.onChange} value={this.state.password} />
+                      <Input
+                        type="password"
+                        placeholder="Contraseña"
+                        name="password"
+                        onChange={this.onChange}
+                        value={this.state.password}
+                        onKeyPress={this.handleKeyPress}
+                      />
                     </InputGroup>
                     <Row>
                       <Col xs="6">
-                        <Button color="primary" className="px-4" onClick={this.handleSubmit}>Iniciar Sesión</Button>
+                        <Button
+                          color="primary"
+                          className="px-4"
+                          onClick={this.handleSubmit}>
+                            Iniciar Sesión
+                        </Button>
                       </Col>
                     </Row>
                   </CardBody>
