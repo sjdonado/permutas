@@ -13,7 +13,10 @@ import {
   Row,
   Alert
 } from 'reactstrap';
-import { COLOMBIA_TEACHING_LADDER, COLOMBIA_REGION_LIST } from '../../../complements/Colombia';
+import { 
+  COLOMBIA_TEACHING_LADDER, 
+  COLOMBIA_REGION_LIST,
+  COLOMBIA_APPOINTMENT_AREA } from '../../../complements/Colombia';
 import _ from 'lodash';
 import Requests from '../../../requests';
 
@@ -21,19 +24,19 @@ class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
-      dni: '',
-      name: '',
-      telephone: '',
-      mobile: '',
-      department: 'Atlántico',
-      city: 'Barranquilla',
-      school: '',
-      teachingLadder: 1,
-      appointmentArea: '',
-      barterDepartment: 'Atlántico',
-      region: '',
+      email: {value: '', validate: true},
+      password: {value: '', validate: true},
+      dni: {value: '', validate: true},
+      name: {value: '', validate: true},
+      telephone: {value: '', validate: true},
+      mobile: {value: '', validate: true},
+      department: {value: 'Atlántico', validate: false},
+      city: {value: 'Barranquilla', validate: false},
+      school: {value:'', validate: true},
+      teachingLadder: {value: "Grado 1 - 2277", validate: false},
+      appointmentArea: {value: 'Rectores', validate: true},
+      barterDepartment: {value: '', validate: true},
+      region: {value: '', validate: false},
       alert: {
         visible: false,
         message: ''
@@ -50,7 +53,9 @@ class Register extends Component {
   }
 
   onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    let field = this.state[e.target.name];
+    field.value = e.target.value
+    this.setState({ field });
   }
 
   onDismiss = () => {
@@ -68,34 +73,49 @@ class Register extends Component {
 
   onSubmit = e => {
     e.preventDefault();
+    if(this.validateFields()){
+      let state = this.state;
+      let doc = {
+        fullname: state.name.value,
+        dni: state.dni.value,
+        email: state.email.value,
+        password: state.password.value,
+        phone: state.telephone.value,
+        mobilePhone: state.mobile.value,
+        department: state.department.value,
+        village: state.city.value,
+        school: state.school.value,
+        educationalLadder: state.teachingLadder.value,
+        appointment: state.appointmentArea.value,        
+        swapDepartment: state.barterDepartment.value
+      }
+      if (!state.region.value) doc.region = state.region.value;
+      Requests.post('/users', this.props.token, doc)
+        .then(res => {
+          console.log(res);
+          this.props.saveUser(res.item);
+          this.props.saveToken(res.meta.token);
+        })
+        .catch(err => {
+          this.showAlert("Ocurrió un error");
+          console.error(err);
+        });
+    }else
+      this.showAlert("Faltan datos");
+  }
 
+  validateFields = () => {
     let state = this.state;
-    let doc = {
-      fullname: state.name,
-      dni: state.dni,
-      email: state.email,
-      password: state.password,
-      phone: state.telephone,
-      mobilePhone: state.mobile,
-      department: state.department,
-      village: state.city,
-      school: state.school,
-      educationalLadder: state.teachingLadder,
-      appointment: state.appointmentArea,
-      zone: state.zone,
-      swapDepartment: state.barterDepartment
+    for( let propName in state){
+      let prop = state[propName];      
+      if(prop.validate && !this.validateField(prop))
+        return false;
     }
-    if (!state.region) doc.region = state.region;
-    Requests.post('/users', this.props.token, doc)
-      .then(res => {
-        console.log(res);
-        this.props.saveUser(res.item);
-        this.props.saveToken(res.meta.token);
-      })
-      .catch(err => {
-        this.showAlert("Ocurrió un error");
-        console.error(err);
-      });
+    return true;
+  }
+
+  validateField = field => {    
+    return field.value && field.value.trim() !== '';
   }
 
   render() {
@@ -128,7 +148,7 @@ class Register extends Component {
                             type="text"
                             placeholder="Nombre completo"
                             name="name"
-                            value={this.state.name}
+                            value={this.state.name.value}
                             onChange={this.onChange} />
                         </InputGroup>
                       </Col>
@@ -143,7 +163,7 @@ class Register extends Component {
                             type="number"
                             placeholder="Cédula"
                             name="dni"
-                            value={this.state.dni}
+                            value={this.state.dni.value}
                             onChange={this.onChange} />
                         </InputGroup>
                       </Col>
@@ -159,7 +179,7 @@ class Register extends Component {
                             type="text"
                             placeholder="Email"
                             name="email"
-                            value={this.state.email}
+                            value={this.state.email.value}
                             onChange={this.onChange} />
                         </InputGroup>
                       </Col>
@@ -174,7 +194,7 @@ class Register extends Component {
                             type="password"
                             placeholder="Contraseña"
                             name="password"
-                            value={this.state.password}
+                            value={this.state.password.value}
                             onChange={this.onChange} />
                         </InputGroup>
                       </Col>
@@ -192,7 +212,7 @@ class Register extends Component {
                             type="number"
                             name="telephone"
                             placeholder="Teléfono fijo"
-                            value={this.state.telephone}
+                            value={this.state.telephone.value}
                             onChange={this.onChange} />
                         </InputGroup>
                       </Col>
@@ -201,14 +221,14 @@ class Register extends Component {
                         <InputGroup className="mb-3">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText>
-                              <i className="icon-action-redo"></i>
+                              <i className="icon-screen-smartphone"></i>
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
                             type="number"
                             placeholder="Celular"
                             name="mobile"
-                            value={this.state.mobile}
+                            value={this.state.mobile.value}
                             onChange={this.onChange} />
                         </InputGroup>
                       </Col>
@@ -225,7 +245,7 @@ class Register extends Component {
                           <Input
                             type="select"
                             name="department"
-                            value={this.state.department}
+                            value={this.state.department.value}
                             onChange={this.onChange}>
                             {this.fetchDepartments().map(element =>
                               <option
@@ -246,9 +266,9 @@ class Register extends Component {
                           <Input
                             type="select"
                             name="city"
-                            value={this.state.city}
+                            value={this.state.city.value}
                             onChange={this.onChange}>
-                            {this.filterRegionListByState(this.state.department).map(el =>
+                            {this.filterRegionListByState(this.state.department.value).map(el =>
                               <option
                                 key={el.c_digo_dane_del_municipio}
                                 value={el.municipio}> {el.municipio}
@@ -270,7 +290,7 @@ class Register extends Component {
                             name="school"
                             type="text"
                             placeholder="Institución educativa"
-                            value={this.state.school}
+                            value={this.state.school.value}
                             onChange={this.onChange} />
                         </InputGroup>
                       </Col>
@@ -284,7 +304,7 @@ class Register extends Component {
                           <Input
                             type="select"
                             name="teachingLadder"
-                            value={this.state.teachingLadder}
+                            value={this.state.teachingLadder.value}
                             onChange={this.onChange}>
                             {COLOMBIA_TEACHING_LADDER.map(grade =>
                               <option
@@ -301,29 +321,37 @@ class Register extends Component {
                         <InputGroup className="mb-3">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText>
-                              <i className="icon-location-pin"></i>
+                              <i className="icon-user"></i>
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
                             name="appointmentArea"
-                            type="text"
-                            value={this.state.appointmentArea}
-                            placeholder="Área de nombramiento"
-                            onChange={this.onChange} />
+                            type="select"
+                            value={this.state.appointmentArea.value}                            
+                            onChange={this.onChange}>
+                            {
+                              COLOMBIA_APPOINTMENT_AREA.map( (area,index) => 
+                                <option
+                                key={index}
+                                value={area}>
+                                {area}
+                                </option>)
+                            }
+                            </Input>
                         </InputGroup>
                       </Col>
                       <Col md="6">
                         <InputGroup className="mb-3">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText>
-                              Zona
+                              <i className="icon-location-pin"></i>
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
                             type="text"
-                            name="zone"
-                            value={this.state.zone}
-                            placeholder={"Zona"}
+                            name="region"
+                            value={this.state.region.value}
+                            placeholder={"Región"}
                             onChange={this.onChange}>
                           </Input>
                         </InputGroup>
@@ -337,17 +365,11 @@ class Register extends Component {
                         </InputGroupText>
                       </InputGroupAddon>
                       <Input
-                        type="select"
+                        required
+                        type="text"
                         name="barterDepartment"
-                        value={this.state.barterDepartment}
-                        onChange={this.onChange}>
-                        {this.fetchDepartments().map(element =>
-                          <option
-                            key={element.c_digo_dane_del_departamento}
-                            value={element.departamento}> {element.departamento}
-                          </option>
-                        )}
-                      </Input>
+                        value={this.state.barterDepartment.value}
+                        onChange={this.onChange}/>                      
                     </InputGroup>
 
                     <Button
