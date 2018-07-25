@@ -3,6 +3,7 @@ import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 import Requests from '../../Requests';
 
 const MESSAGES_ENDPOINT = "/messages";
+const DATE_FORMAT_CONFIG = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
 class Messages extends Component {
   constructor(props) {
@@ -10,21 +11,27 @@ class Messages extends Component {
     this.state = {
       messages: []
     };
-    this.fetchMessages();
   }
 
-
   componentDidMount() {
-    console.log('h');
-    //this.fetchMessages();
+    this.fetchMessages();
   }
 
   fetchMessages = () => {
     Requests.get(MESSAGES_ENDPOINT)
-      .then(res => {
-        console.log(res)
+      .then( res => {
+        let items = res.data.items;
+        let {messages} = this.state;
+        if(items.length > 0){
+          messages.push(...items);
+          this.setState({messages});          
+        }
       })
       .catch(err => console.error(err))
+  }
+
+  formatDate = date => {
+    return new Date(date).toLocaleDateString("es-US",DATE_FORMAT_CONFIG);
   }
 
   render() {
@@ -38,16 +45,20 @@ class Messages extends Component {
               </CardHeader>
               <CardBody>
                 <Table responsive striped hover>
+                  <theader>
+                    <tr>
+                      <td>Mensaje</td>
+                      <td style={{width:"25%"}}>Emitido</td>
+                    </tr>
+                  </theader>
                   <tbody>
                     {
-                      this.state.messages.map(([key, value]) => {
-                        return (
-                          <tr>
-                            <td>{`${key}:`}</td>
-                            <td><strong>{value}</strong></td>
+                      this.state.messages.map( message =>                         
+                          <tr key={message._id}>
+                            <td style={{whiteSpace:"pre-line"}} >{message.text}</td>
+                            <td>{this.formatDate(message.createdAt)}</td>
                           </tr>
-                        )
-                      })
+                      )
                     }
                   </tbody>
                 </Table>
