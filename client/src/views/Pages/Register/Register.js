@@ -79,10 +79,11 @@ class Register extends Component {
       phone: state.telephone,
       mobilePhone: state.mobile,
       department: state.department,
-      municipality: state.city,
+      village: state.city,
       school: state.school,
       educationalLadder: state.teachingLadder,
       appointment: state.appointmentArea,
+      zone: state.zone,
       swapDepartment: state.barterDepartment
     }
     if (!state.region) doc.region = state.region;
@@ -140,7 +141,7 @@ class Register extends Component {
                           <Input
                             type="number"
                             placeholder="Cédula"
-                            name="name"
+                            name="dni"
                             value={this.state.dni}
                             onChange={this.onChange} />
                         </InputGroup>
@@ -313,14 +314,14 @@ class Register extends Component {
                         <InputGroup className="mb-3">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText>
-                              Región
+                              Zona
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
                             type="text"
-                            name="region"
-                            value={this.state.region}
-                            placeholder={"Región"}
+                            name="zone"
+                            value={this.state.zone}
+                            placeholder={"Zona"}
                             onChange={this.onChange}>
                           </Input>
                         </InputGroup>

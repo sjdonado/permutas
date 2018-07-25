@@ -40,7 +40,7 @@ class App extends Component {
           <Route exact path="/404" name="Page 404" component={Page404} />
           <Route exact path="/500" name="Page 500" component={Page500} />
           <Route path="/" name="Home" render={props => this.props.token != null ? (<DefaultLayout {...props} />) : (<Redirect to="/login" />)} />
-          <Route path="/teachers" name="Teachers" render={props => this.props.user.role === 'admin' ? (<DefaultLayout {...props} />) : (<Redirect to="/dashboard" />)} />
+          <Route path="/teachers" name="Teachers" render={props => this.props.user.role === 'admin' ? (<DefaultLayout {...props} />) : (<Redirect to="/" />)} />
         </Switch>
       </BrowserRouter>
     );

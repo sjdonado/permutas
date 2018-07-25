@@ -45,6 +45,10 @@ const fields = {
     type: String,
     default: '',
   },
+  zone: {
+    type: String,
+    default: '',
+  },
   village: {
     type: String,
     required: true,

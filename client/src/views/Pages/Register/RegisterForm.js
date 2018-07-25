@@ -35,7 +35,7 @@ class RegisterForm extends Component {
     return (
       <form>
         <Row>
-          <Col md="12">
+          <Col md="6">
             <InputGroup className="mb-3">
               <InputGroupAddon addonType="prepend">
                 <InputGroupText>
@@ -47,6 +47,21 @@ class RegisterForm extends Component {
                 placeholder="Nombre completo"
                 name="fullname"
                 value={this.state.fullname}
+                onChange={this.onChange} />
+            </InputGroup>
+          </Col>
+          <Col md="6">
+            <InputGroup className="mb-3">
+              <InputGroupAddon addonType="prepend">
+                <InputGroupText>
+                  #
+                  </InputGroupText>
+              </InputGroupAddon>
+              <Input
+                type="number"
+                placeholder="Cédula"
+                name="dni"
+                value={this.state.dni}
                 onChange={this.onChange} />
             </InputGroup>
           </Col>
@@ -148,7 +163,7 @@ class RegisterForm extends Component {
               <Input
                 type="select"
                 name="city"
-                value={this.state.city}
+                value={this.state.village}
                 onChange={this.onChange}>
                 {this.filterRegionListByState(this.state.department).map(el =>
                   <option
@@ -186,7 +201,7 @@ class RegisterForm extends Component {
               <Input
                 type="select"
                 name="teachingLadder"
-                value={this.state.teachingLadder}
+                value={this.state.educationalLadder}
                 onChange={this.onChange}>
                 {COLOMBIA_TEACHING_LADDER.map(grade =>
                   <option
@@ -209,7 +224,7 @@ class RegisterForm extends Component {
               <Input
                 name="appointmentArea"
                 type="text"
-                value={this.state.appointmentArea}
+                value={this.state.appointment}
                 placeholder="Área de nombramiento"
                 onChange={this.onChange} />
             </InputGroup>
@@ -218,14 +233,14 @@ class RegisterForm extends Component {
             <InputGroup className="mb-3">
               <InputGroupAddon addonType="prepend">
                 <InputGroupText>
-                  Región
+                  Zona
                 </InputGroupText>
               </InputGroupAddon>
               <Input
                 type="text"
-                name="region"
-                value={this.state.region}
-                placeholder={"Región"}
+                name="zone"
+                value={this.state.zone}
+                placeholder={"Zona"}
                 onChange={this.onChange}>
               </Input>
             </InputGroup>
@@ -241,7 +256,7 @@ class RegisterForm extends Component {
           <Input
             type="select"
             name="barterDepartment"
-            value={this.state.barterDepartment}
+            value={this.state.swapDepartment}
             onChange={this.onChange}>
             {this.fetchDepartments().map(element =>
               <option
