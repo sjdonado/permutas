@@ -36,7 +36,6 @@ class Login extends Component {
         console.log(res);
         this.props.saveUser(res.item);
         this.props.saveToken(res.meta.token);
-        console.log('TOKEN', this.props.token);
       })
       .catch(err => {
         console.error(err);
@@ -46,9 +45,7 @@ class Login extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
   render() {
-    if (this.props.token) {
-      return <Redirect to='/' />;
-    }
+    if (this.props.token) return <Redirect to='/' />;
     return (
       <div className="app flex-row align-items-center">
         <Container>

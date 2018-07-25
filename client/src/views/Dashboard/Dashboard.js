@@ -7,24 +7,29 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       filters: '',
-      usersData: []
+      usersData: [],
     };
+    console.log('REDUX_STATE', this.props.user);
   }
   componentDidMount() {
-    Requests.get(`/users/all${this.state.filters}`, this.props.token)
+    this.getUsers();
+  }
+  interaction = id => {
+    Requests.post('/messages', this.props.token, { userId: id })
       .then(res => {
-        this.setState({
-          usersData: res.items
-        })
+        this.props.user.contacted.push(id);
+        this.getUsers();
       })
       .catch(err => {
         console.error(err);
       });
   }
-  interaction = id => {
-    Requests.post('/messages', this.props.token, { userId: id })
+  getUsers() {
+    Requests.get(`/users/all${this.state.filters}`, this.props.token)
       .then(res => {
-        // console.log(res)
+        this.setState({
+          usersData: res.items
+        })
       })
       .catch(err => {
         console.error(err);

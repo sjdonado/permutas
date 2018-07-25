@@ -58,10 +58,11 @@ exports.all = (req, res, next) => {
     populate,
   } = filterByNested(params, referencesNames);
 
-  console.log('ID', doc.id);
+  const filters = [{ userId: doc.id }, { kind: 'global' }];
+
   const count = Model.countDocuments();
   const all = Model
-    .find({ $or: [{ userId: doc.id }, { kind: 'global' }] })
+    .find({ $or: filters })
     .sort(sort)
     .skip(skip)
     .limit(limit)

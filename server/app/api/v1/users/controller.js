@@ -56,6 +56,7 @@ exports.externalId = (req, res, next, id) => {
 exports.all = (req, res, next) => {
   const {
     query,
+    doc,
   } = req;
 
   const {
@@ -69,9 +70,11 @@ exports.all = (req, res, next) => {
   } = parseSortParams(query, fields);
   const sort = compactSortToStr(sortBy, direction);
 
+  const filters = [{ _id: { $ne: doc.id }, ...query }];
+
   const count = Model.countDocuments();
   const all = Model
-    .find()
+    .find({ $or: filters })
     .sort(sort)
     .skip(skip)
     .limit(limit);

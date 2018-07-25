@@ -38,7 +38,6 @@ class Register extends Component {
         visible: false,
         message: ''
       },
-      redirect: false
     }
   }
 
@@ -90,7 +89,8 @@ class Register extends Component {
     Requests.post('/users', this.props.token, doc)
       .then(res => {
         console.log(res);
-        this.setState({ redirect: true });
+        this.props.saveUser(res.item);
+        this.props.saveToken(res.meta.token);
       })
       .catch(err => {
         this.showAlert("Ocurrió un error");
@@ -104,7 +104,7 @@ class Register extends Component {
       toggle={this.onDismiss}>
       {this.state.alert.message}
     </Alert>
-    if (this.state.redirect) return <Redirect to='/' />
+    if (this.props.token) return <Redirect to='/' />;
     return (
       <div className="app flex-row align-items-center">
         <Container>
