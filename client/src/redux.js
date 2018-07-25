@@ -9,17 +9,27 @@ export const saveUser = user => ({
   user,
 });
 
+export const deleteUser = () => ({
+  type: 'DELETE_USER',
+});
+
 export const saveToken = token => ({
   type: 'SAVE_TOKEN',
   token,
 });
 
-export const deleteUser = () => ({
-  type: 'DELETE_USER',
-});
-
 export const deleteToken = () => ({
   type: 'DELETE_TOKEN',
+});
+
+export const saveCurrentUser = currentUser => ({
+  type: 'SAVE_CURRENT_USER',
+  currentUser,
+});
+
+export const deleteCurrentUser = currentUser => ({
+  type: 'DELETE_CURRENT_USER',
+  currentUser,
 });
 
 // reducers.js
@@ -45,9 +55,22 @@ export const token = (state = null, action) => {
   }
 };
 
+export const currentUser = (state = null, action) => {
+  console.log('REDUCER', action.currentUser);
+  switch (action.type) {
+    case 'SAVE_CURRENT_USER':
+      return action.currentUser;
+    case 'DELETE_CURRENT_USER':
+      return null;
+    default:
+      return state;
+  }
+};
+
 export const reducers = combineReducers({
   user,
-  token
+  token,
+  currentUser
 });
 
 // store.js

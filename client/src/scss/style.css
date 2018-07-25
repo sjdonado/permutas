@@ -9909,5 +9909,9 @@ a:not([href]):not([tabindex]) {
 .card {
   margin-top: 20px; }
 
+.new-message {
+  margin-top: 20px;
+  float: right; }
+
 html body .app.flex-row.align-items-center {
   height: 100vh; }

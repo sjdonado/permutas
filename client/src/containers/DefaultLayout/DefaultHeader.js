@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { DropdownItem, DropdownMenu, DropdownToggle, Nav } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import Requests from './../../requests';
 import TeacherModal from './../../views/Teachers/TeacherModal';
 
 import { AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
@@ -18,33 +17,21 @@ const defaultProps = {};
 class DefaultHeader extends Component {
   constructor(props) {
     super(props);
-    this.sate = {
-      userDetailsModal: false,
-      currentUser: {}
+    this.state = {
+      teacherModal: false,
     }
   }
-  updateUser = e => {
-    Requests.put(`/users/${this.state.currentUser._id}`, this.props.token, this.state.currentUser)
-      .then(res => {
-        this.setState({ userDetailsModal: false });
-        console.log('MANIYA');
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  }
 
-  toggleUserDetailsModal = user => {
-    const newUser = this.state.user ? {} : user;
+  toggleTeacherModal = e => {
+    console.log('CLICK');
     this.setState({
-      userDetailsModal: !this.state.userDetailsModal,
-      currentUser: newUser
+      teacherModal: !this.state.teacherModal,
     });
-  }
-
-  newData = data => {
-    const updatedCurrentUser = Object.assign(this.state.currentUser, data);
-    this.setState({ currentUser: updatedCurrentUser });
+    if (this.props.currentUser) {
+      this.props.deleteCurrentUser();
+    } else {
+      this.props.saveCurrentUser(this.props.user);
+    }
   }
 
   logout = () => {
@@ -73,12 +60,12 @@ class DefaultHeader extends Component {
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
               <DropdownItem header tag="div" className="text-center"><strong>{this.props.user.fullname}</strong></DropdownItem>
-              <DropdownItem><i className="fa fa-user"></i> Perfil</DropdownItem>
+              <DropdownItem onClick={this.toggleTeacherModal}><i className="fa fa-user"></i> Perfil</DropdownItem>
               <DropdownItem onClick={this.logout}><i className="fa fa-lock"></i> Cerrar sesión</DropdownItem>
             </DropdownMenu>
           </AppHeaderDropdown>
         </Nav>
-        {this.state.userDetailsModal && <TeacherModal open={this.state.userDetailsModal} toggle={this.toggleUserDetailsModal} user={this.state.currentUser} updateUser={this.updateUser} newData={this.newData} />}
+        {this.state.teacherModal && <TeacherModal open={this.state.teacherModal} toggle={this.toggleTeacherModal} {...this.props} />}
       </React.Fragment>
     );
   }

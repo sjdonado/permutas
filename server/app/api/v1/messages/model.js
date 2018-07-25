@@ -5,17 +5,16 @@ const {
 } = mongoose;
 
 const fields = {
+  title: {
+    type: String,
+    default: '',
+    trim: true,
+  },
   text: {
     type: String,
     default: '',
     trim: true,
   },
-  read: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'user',
-    },
-  ],
   kind: {
     type: String,
     default: 'interaction',
@@ -39,11 +38,6 @@ const message = new Schema(Object.assign(fields, references), {
   toJSON: {
     virtuals: true,
   },
-});
-
-message.pre('save', function Save(next) {
-  this.read.push(this.id);
-  next();
 });
 
 module.exports = {

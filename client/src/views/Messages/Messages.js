@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row, Table, Button } from 'reactstrap';
 import Requests from '../../requests';
+import NewMessageModal from './NewMessageModal';
 
 const MESSAGES_ENDPOINT = "/messages";
 const DATE_FORMAT_CONFIG = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -9,7 +10,8 @@ class Messages extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: []
+      messages: [],
+      messageModal: false
     };
   }
 
@@ -30,6 +32,16 @@ class Messages extends Component {
       .catch(err => console.error(err))
   }
 
+  toggleMessageModal = e => {
+    if (this.state.messageModal) {
+      this.setState({ messages: [] });
+      this.fetchMessages();
+    }
+    this.setState({
+      messageModal: !this.state.messageModal,
+    });
+  }
+
   formatDate = date => {
     return new Date(date).toLocaleDateString("es-US", DATE_FORMAT_CONFIG);
   }
@@ -37,6 +49,11 @@ class Messages extends Component {
   render() {
     return (
       <div className="animated fadeIn">
+        {this.props.user.role === "admin" && (<Row>
+          <Col lg={12}>
+            <Button color="primary" className="new-message" onClick={this.toggleMessageModal}>Nuevo Mensaje</Button>
+          </Col>
+        </Row>)}
         <Row>
           <Col lg={12}>
             <Card>
@@ -45,17 +62,17 @@ class Messages extends Component {
               </CardHeader>
               <CardBody>
                 <Table responsive striped hover>
-                  <theader>
+                  <thead>
                     <tr>
                       <td>Mensaje</td>
                       <td style={{ width: "25%" }}>Emitido</td>
                     </tr>
-                  </theader>
+                  </thead>
                   <tbody>
                     {
                       this.state.messages.map(message =>
                         <tr key={message._id}>
-                          <td style={{ whiteSpace: "pre-line" }} >{message.text}</td>
+                          <td style={{ whiteSpace: "pre-line" }} >{message.title} <br /> {message.text}</td>
                           <td>{this.formatDate(message.createdAt)}</td>
                         </tr>
                       )
@@ -66,6 +83,7 @@ class Messages extends Component {
             </Card>
           </Col>
         </Row>
+        {this.state.messageModal && <NewMessageModal open={this.state.messageModal} toggle={this.toggleMessageModal} {...this.props} />}
       </div>
     )
   }

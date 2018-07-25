@@ -3,7 +3,7 @@ import { Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 import TeacherModal from './TeacherModal';
 import Requests from '../../requests';
 
-function UserRow(props) {
+function TeacherRow(props) {
   return (
     <tr key={props.user._id}>
       <th scope="row"><a onClick={e => props.onClick(props.user)}>{props.user.fullname}</a></th>
@@ -15,54 +15,30 @@ function UserRow(props) {
   )
 }
 
-class Users extends Component {
+class Teachers extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       usersData: [],
-      userDetailsModal: false,
-      currentUser: {}
+      teacherModal: false,
     }
+    console.log('TEACHERS', props);
   }
 
   componentDidMount() {
     this.getUsers();
   }
 
-  toggleUserDetailsModal = user => {
-    const newUser = this.state.user ? {} : user;
+  toggleTeacherModal = user => {
     this.setState({
-      userDetailsModal: !this.state.userDetailsModal,
-      currentUser: newUser
+      teacherModal: !this.state.teacherModal,
     });
-  }
-
-  updateUser = e => {
-    Requests.put(`/users/${this.state.currentUser._id}`, this.props.token, this.state.currentUser)
-      .then(res => {
-        this.setState({ userDetailsModal: false });
-        console.log('MANIYA');
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  }
-
-  deleteUser = e => {
-    Requests.delete(`/users/${this.state.currentUser._id}`, this.props.token)
-      .then(res => {
-        this.setState({ userDetailsModal: false });
-        this.getUsers();
-      })
-      .catch(err => {
-        console.error(err);
-      });
-  }
-
-  newData = data => {
-    const updatedCurrentUser = Object.assign(this.state.currentUser, data);
-    this.setState({ currentUser: updatedCurrentUser });
+    if (this.props.currentUser) {
+      this.props.deleteCurrentUser();
+    } else {
+      this.props.saveCurrentUser(user);
+    }
   }
 
   getUsers() {
@@ -99,7 +75,7 @@ class Users extends Component {
                   </thead>
                   <tbody>
                     {this.state.usersData.map((user, index) =>
-                      <UserRow key={index} user={user} onClick={this.toggleUserDetailsModal} />
+                      <TeacherRow key={index} user={user} onClick={this.toggleTeacherModal} />
                     )}
                   </tbody>
                 </Table>
@@ -107,10 +83,10 @@ class Users extends Component {
             </Card>
           </Col>
         </Row>
-        {this.state.userDetailsModal && <TeacherModal open={this.state.userDetailsModal} toggle={this.toggleUserDetailsModal} user={this.state.currentUser} updateUser={this.updateUser} newData={this.newData} deleteUser={this.deleteUser} />}
+        {this.state.teacherModal && <TeacherModal open={this.state.teacherModal} toggle={this.toggleTeacherModal} getUsers={this.getUsers} {...this.props} />}
       </div>
     )
   }
 }
 
-export default Users;
+export default Teachers;

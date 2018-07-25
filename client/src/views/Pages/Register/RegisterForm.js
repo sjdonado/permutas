@@ -14,7 +14,7 @@ class RegisterForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ...props.user,
+      ...props.currentUser,
     }
   }
 
@@ -28,7 +28,8 @@ class RegisterForm extends Component {
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
-    this.props.newData({ [e.target.name]: e.target.value });
+    const updatedCurrentUser = Object.assign(this.props.currentUser, { [e.target.name]: e.target.value });
+    this.props.saveCurrentUser(updatedCurrentUser);
   }
 
   render() {
@@ -46,7 +47,7 @@ class RegisterForm extends Component {
                 type="text"
                 placeholder="Nombre completo"
                 name="fullname"
-                value={this.state.fullname}
+                value={this.props.currentUser.fullname}
                 onChange={this.onChange} />
             </InputGroup>
           </Col>
@@ -67,7 +68,7 @@ class RegisterForm extends Component {
           </Col>
         </Row>
         <Row>
-          <Col md="6">
+          <Col md="12">
             <InputGroup className="mb-3">
               <InputGroupAddon addonType="prepend">
                 <InputGroupText>@</InputGroupText>
@@ -77,21 +78,6 @@ class RegisterForm extends Component {
                 placeholder="Email"
                 name="email"
                 value={this.state.email}
-                onChange={this.onChange} />
-            </InputGroup>
-          </Col>
-          <Col md="6">
-            <InputGroup className="mb-3">
-              <InputGroupAddon addonType="prepend">
-                <InputGroupText>
-                  <i className="icon-lock"></i>
-                </InputGroupText>
-              </InputGroupAddon>
-              <Input
-                type="password"
-                placeholder="Contraseña"
-                name="password"
-                value={this.state.password}
                 onChange={this.onChange} />
             </InputGroup>
           </Col>
@@ -162,7 +148,7 @@ class RegisterForm extends Component {
               </InputGroupAddon>
               <Input
                 type="select"
-                name="city"
+                name="village"
                 value={this.state.village}
                 onChange={this.onChange}>
                 {this.filterRegionListByState(this.state.department).map(el =>
