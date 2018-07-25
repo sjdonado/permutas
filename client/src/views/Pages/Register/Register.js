@@ -60,10 +60,10 @@ class Register extends Component {
   }
 
   showAlert = msg => {
-    // let { alert } = this.state;
-    // alert.visible = true
-    // alert.msg = msg
-    // this.setState({ alert });
+    let { alert } = this.state;
+    alert.visible = true
+    alert.message = msg
+    this.setState({ alert });
   }
 
   onSubmit = e => {
@@ -115,6 +115,7 @@ class Register extends Component {
                   <h1>Registro</h1>
                   <p className="text-muted">Crea tu cuenta</p>
                   <form>
+                    
                     <Row>
                       <Col md="6">
                         <InputGroup className="mb-3">
@@ -147,6 +148,7 @@ class Register extends Component {
                         </InputGroup>
                       </Col>
                     </Row>
+
                     <Row>
                       <Col md="6">
                         <InputGroup className="mb-3">
@@ -360,9 +362,9 @@ class Register extends Component {
                 </CardBody>
               </Card>
             </Col>
-          </Row>
+          </Row>        
+          {alert}        
         </Container>
-        {alert}
       </div>
     );
   }
