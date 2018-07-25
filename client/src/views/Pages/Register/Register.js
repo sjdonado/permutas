@@ -61,10 +61,10 @@ class Register extends Component {
   }
 
   showAlert = msg => {
-    let { alert } = this.state;
-    alert.visible = true
-    alert.msg = msg
-    this.setState({ alert });
+    // let { alert } = this.state;
+    // alert.visible = true
+    // alert.msg = msg
+    // this.setState({ alert });
   }
 
   onSubmit = e => {
