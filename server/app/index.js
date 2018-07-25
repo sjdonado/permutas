@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const cors = require('cors');
+// const cors = require('cors');
 
 
 const database = require('./database');
@@ -12,7 +12,7 @@ database.connect();
 
 const app = express();
 
-app.use(cors());
+// app.use(cors());
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({
