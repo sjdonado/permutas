@@ -6,9 +6,15 @@ import {
   InputGroupAddon,
   InputGroupText,
   Row,
+  Button
 } from 'reactstrap';
-import { COLOMBIA_TEACHING_LADDER, COLOMBIA_REGION_LIST } from '../../../complements/Colombia';
+import {
+  COLOMBIA_TEACHING_LADDER,
+  COLOMBIA_REGION_LIST,
+  COLOMBIA_APPOINTMENT_AREA} from '../../../complements/Colombia';
 import _ from 'lodash';
+
+const DEFAULT_CITY = "Barranquilla";
 
 class RegisterForm extends Component {
   constructor(props) {
@@ -16,6 +22,8 @@ class RegisterForm extends Component {
     this.state = {
       ...props.currentUser,
     }
+    this.state.municipality = (this.state.municipality === "Ninguno") ?
+      DEFAULT_CITY : this.state.municipality;
   }
 
   filterRegionListByState = department => {
@@ -47,7 +55,7 @@ class RegisterForm extends Component {
                 type="text"
                 placeholder="Nombre completo"
                 name="fullname"
-                value={this.props.currentUser.fullname}
+                value={this.state.fullname}
                 onChange={this.onChange} />
             </InputGroup>
           </Col>
@@ -56,7 +64,7 @@ class RegisterForm extends Component {
               <InputGroupAddon addonType="prepend">
                 <InputGroupText>
                   #
-                  </InputGroupText>
+                </InputGroupText>
               </InputGroupAddon>
               <Input
                 type="number"
@@ -67,8 +75,9 @@ class RegisterForm extends Component {
             </InputGroup>
           </Col>
         </Row>
+
         <Row>
-          <Col md="12">
+          <Col md="6">
             <InputGroup className="mb-3">
               <InputGroupAddon addonType="prepend">
                 <InputGroupText>@</InputGroupText>
@@ -81,7 +90,23 @@ class RegisterForm extends Component {
                 onChange={this.onChange} />
             </InputGroup>
           </Col>
+          <Col md="6">
+            <InputGroup className="mb-3">
+              <InputGroupAddon addonType="prepend">
+                <InputGroupText>
+                  <i className="icon-lock"></i>
+                </InputGroupText>
+              </InputGroupAddon>
+              <Input
+                type="password"
+                placeholder="Contraseña"
+                name="password"
+                value={this.state.password}
+                onChange={this.onChange} />
+            </InputGroup>
+          </Col>
         </Row>
+
         <Row>
           <Col md="6">
             <InputGroup className="mb-3">
@@ -103,7 +128,7 @@ class RegisterForm extends Component {
             <InputGroup className="mb-3">
               <InputGroupAddon addonType="prepend">
                 <InputGroupText>
-                  <i className="icon-action-redo"></i>
+                  <i className="icon-screen-smartphone"></i>
                 </InputGroupText>
               </InputGroupAddon>
               <Input
@@ -147,8 +172,8 @@ class RegisterForm extends Component {
               </InputGroupAddon>
               <Input
                 type="select"
-                name="village"
-                value={this.state.village}
+                name="municipality"
+                value={this.state.municipality}
                 onChange={this.onChange}>
                 {this.filterRegionListByState(this.state.department).map(el =>
                   <option
@@ -160,6 +185,7 @@ class RegisterForm extends Component {
             </InputGroup>
           </Col>
         </Row>
+
         <Row>
           <Col md="6">
             <InputGroup className="mb-3">
@@ -198,7 +224,31 @@ class RegisterForm extends Component {
             </InputGroup>
           </Col>
         </Row>
+
         <Row>
+          <Col md="6">
+            <InputGroup className="mb-3">
+              <InputGroupAddon addonType="prepend">
+                <InputGroupText>
+                  <i className="icon-user"></i>
+                </InputGroupText>
+              </InputGroupAddon>
+              <Input
+                name="appointmentArea"
+                type="select"
+                value={this.state.appointment}
+                onChange={this.onChange}>
+                {
+                  COLOMBIA_APPOINTMENT_AREA.map( (area,index) =>
+                    <option
+                    key={index}
+                    value={area}>
+                    {area}
+                    </option>)
+                }
+                </Input>
+            </InputGroup>
+          </Col>
           <Col md="6">
             <InputGroup className="mb-3">
               <InputGroupAddon addonType="prepend">
@@ -207,50 +257,33 @@ class RegisterForm extends Component {
                 </InputGroupText>
               </InputGroupAddon>
               <Input
-                name="appointmentArea"
                 type="text"
-                value={this.state.appointment}
-                placeholder="Área de nombramiento"
-                onChange={this.onChange} />
-            </InputGroup>
-          </Col>
-          <Col md="6">
-            <InputGroup className="mb-3">
-              <InputGroupAddon addonType="prepend">
-                <InputGroupText>
-                  Zona
-                </InputGroupText>
-              </InputGroupAddon>
-              <Input
-                type="text"
-                name="zone"
-                value={this.state.zone}
-                placeholder={"Zona"}
+                name="region"
+                value={this.state.region}
+                placeholder={"Región"}
                 onChange={this.onChange}>
               </Input>
             </InputGroup>
           </Col>
         </Row>
 
-        <InputGroup className="mb-3">
-          <InputGroupAddon addonType="prepend">
-            <InputGroupText>
-              Departamento que desea la permuta
-            </InputGroupText>
-          </InputGroupAddon>
-          <Input
-            type="select"
-            name="barterDepartment"
-            value={this.state.swapDepartment}
-            onChange={this.onChange}>
-            {this.fetchDepartments().map(element =>
-              <option
-                key={element.c_digo_dane_del_departamento}
-                value={element.departamento}> {element.departamento}
-              </option>
-            )}
-          </Input>
-        </InputGroup>
+        <Row>
+          <Col md="12">
+            <InputGroup className="mb-3">
+              <InputGroupAddon addonType="prepend">
+                <InputGroupText>
+                  Departamento que desea la permuta
+                </InputGroupText>
+              </InputGroupAddon>
+              <Input
+                required
+                type="text"
+                name="barterDepartment"
+                value={this.state.swapDepartment}
+                onChange={this.onChange}/>
+            </InputGroup>
+          </Col>
+        </Row>
       </form>
     )
   }
