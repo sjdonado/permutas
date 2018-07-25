@@ -19,6 +19,8 @@ npm-debug.log
 .env.development.local
 .env.test.local
 .env.production.local
+client/src/scss/style.css
+client/src/scss/vendors/chart.css
 
 
 npm-debug.log*
