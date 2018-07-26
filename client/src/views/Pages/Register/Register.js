@@ -27,7 +27,7 @@ class Register extends Component {
       email: {value: '', validate: true},
       password: {value: '', validate: true},
       dni: {value: '', validate: true},
-      name: {value: '', validate: true},
+      fullname: {value: '', validate: true},
       telephone: {value: '', validate: true},
       mobile: {value: '', validate: true},
       department: {value: 'Atlántico', validate: false},
