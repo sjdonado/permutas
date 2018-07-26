@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
-import { Col, Row, ListGroupItem, ListGroup, ListGroupItemHeading, ListGroupItemText, Button, Card, CardBody, Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
+import { Col, Row, ListGroupItem, ListGroup, ListGroupItemHeading, ListGroupItemText, Button, Card, CardBody, Input, InputGroup } from 'reactstrap';
 import Requests from '../../requests';
+import {
+  COLOMBIA_TEACHING_LADDER,
+  COLOMBIA_REGION_LIST,
+  COLOMBIA_APPOINTMENT_AREA
+} from '../../complements/Colombia';
+
+import _ from 'lodash';
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
       usersData: [],
-      department: '',
-      municipality: '',
-      educationalLadder: '',
-      appointment: '',
+      department: 'Atlántico',
+      municipality: 'Barranquilla',
+      teachingLadder: 'Grado 1 - 2277',
+      appointmentArea: 'Rectores',
     };
   }
   componentDidMount() {
@@ -36,6 +43,12 @@ class Dashboard extends Component {
       .catch(err => {
         console.error(err);
       });
+  }
+  filterRegionListByState = department => {
+    return COLOMBIA_REGION_LIST.filter(element => element.departamento === department);
+  }
+  fetchDepartments = () => {
+    return _.uniqBy(COLOMBIA_REGION_LIST, element => element.departamento);
   }
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -69,45 +82,73 @@ class Dashboard extends Component {
               <Col md="3">
                 <InputGroup className="mb-3">
                   <Input
-                    type="text"
+                    type="select"
                     name="department"
                     placeholder="Departamento"
                     className={this.state.department.length > 0 ? "input-success" : ""}
                     value={this.state.department}
-                    onChange={this.onChange} />
+                    onChange={this.onChange}>
+                    {this.fetchDepartments().map(element =>
+                      <option
+                        key={element.c_digo_dane_del_departamento}
+                        value={element.departamento}> {element.departamento}
+                      </option>
+                    )}
+                  </Input>
                 </InputGroup>
               </Col>
               <Col md="3">
                 <InputGroup className="mb-3">
                   <Input
-                    type="text"
+                    type="select"
                     name="municipality"
                     placeholder="Municipio"
                     className={this.state.municipality.length > 0 ? "input-success" : ""}
                     value={this.state.municipality}
-                    onChange={this.onChange} />
+                    onChange={this.onChange} >
+                    {this.filterRegionListByState(this.state.department).map(el =>
+                      <option
+                        key={el.c_digo_dane_del_municipio}
+                        value={el.municipio}> {el.municipio}
+                      </option>
+                    )}
+                  </Input>
                 </InputGroup>
               </Col>
               <Col md="3">
                 <InputGroup className="mb-3">
                   <Input
-                    type="text"
-                    name="educationalLadder"
+                    type="select"
+                    name="teachingLadder"
                     placeholder="Escalafón"
-                    className={this.state.educationalLadder.length > 0 ? "input-success" : ""}
-                    value={this.state.educationalLadder}
-                    onChange={this.onChange} />
+                    className={this.state.teachingLadder.length > 0 ? "input-success" : ""}
+                    value={this.state.teachingLadder}
+                    onChange={this.onChange}>
+                    {COLOMBIA_TEACHING_LADDER.map(grade =>
+                      <option
+                        key={grade}
+                        value={grade}>
+                        {grade}
+                      </option>)}
+                  </Input>
                 </InputGroup>
               </Col>
               <Col md="3">
                 <InputGroup className="mb-3">
                   <Input
-                    type="text"
-                    name="appointment"
+                    type="select"
+                    name="appointmentArea"
                     placeholder="Área de nombramiento"
-                    className={this.state.appointment.length > 0 ? "input-success" : ""}
-                    value={this.state.appointment}
-                    onChange={this.onChange} />
+                    className={this.state.appointmentArea.length > 0 ? "input-success" : ""}
+                    value={this.state.appointmentArea}
+                    onChange={this.onChange}>
+                    {COLOMBIA_APPOINTMENT_AREA.map((area, index) =>
+                      <option
+                        key={index}
+                        value={area}>
+                        {area}
+                      </option>)}
+                  </Input>
                 </InputGroup>
               </Col>
             </Row>

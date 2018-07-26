@@ -29,11 +29,11 @@ const fields = {
     trim: true,
     min: 6,
   },
-  phone: {
+  telephone: {
     type: Number,
     min: 7,
   },
-  mobilePhone: {
+  mobile: {
     type: Number,
     min: 10,
   },
@@ -49,23 +49,19 @@ const fields = {
     type: String,
     default: '',
   },
-  village: {
-    type: String,
-    required: true,
-  },
   school: {
     type: String,
     required: true,
   },
-  educationalLadder: {
+  teachingLadder: {
     type: String,
     required: true,
   },
-  appointment: {
+  appointmentArea: {
     type: String,
     required: true,
   },
-  swapDepartment: {
+  barterDepartment: {
     type: String,
     required: true,
   },

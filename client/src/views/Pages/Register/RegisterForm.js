@@ -5,13 +5,13 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  Row,
-  Button
+  Row
 } from 'reactstrap';
 import {
   COLOMBIA_TEACHING_LADDER,
   COLOMBIA_REGION_LIST,
-  COLOMBIA_APPOINTMENT_AREA} from '../../../complements/Colombia';
+  COLOMBIA_APPOINTMENT_AREA
+} from '../../../complements/Colombia';
 import _ from 'lodash';
 
 const DEFAULT_CITY = "Barranquilla";
@@ -117,9 +117,9 @@ class RegisterForm extends Component {
               </InputGroupAddon>
               <Input
                 type="number"
-                name="phone"
+                name="telephone"
                 placeholder="Teléfono fijo"
-                value={this.state.phone}
+                value={this.state.telephone}
                 onChange={this.onChange} />
             </InputGroup>
           </Col>
@@ -134,8 +134,8 @@ class RegisterForm extends Component {
               <Input
                 type="number"
                 placeholder="Celular"
-                name="mobilePhone"
-                value={this.state.mobilePhone}
+                name="mobile"
+                value={this.state.mobile}
                 onChange={this.onChange} />
             </InputGroup>
           </Col>
@@ -191,6 +191,22 @@ class RegisterForm extends Component {
             <InputGroup className="mb-3">
               <InputGroupAddon addonType="prepend">
                 <InputGroupText>
+                  <i className="icon-location-pin"></i>
+                </InputGroupText>
+              </InputGroupAddon>
+              <Input
+                type="text"
+                name="zone"
+                value={this.state.zone}
+                placeholder={"Zona"}
+                onChange={this.onChange}>
+              </Input>
+            </InputGroup>
+          </Col>
+          <Col md="6">
+            <InputGroup className="mb-3">
+              <InputGroupAddon addonType="prepend">
+                <InputGroupText>
                   <i className="icon-notebook"></i>
                 </InputGroupText>
               </InputGroupAddon>
@@ -202,6 +218,10 @@ class RegisterForm extends Component {
                 onChange={this.onChange} />
             </InputGroup>
           </Col>
+
+        </Row>
+
+        <Row>
           <Col md="6">
             <InputGroup className="mb-3">
               <InputGroupAddon addonType="prepend">
@@ -212,7 +232,7 @@ class RegisterForm extends Component {
               <Input
                 type="select"
                 name="teachingLadder"
-                value={this.state.educationalLadder}
+                value={this.state.teachingLadder}
                 onChange={this.onChange}>
                 {COLOMBIA_TEACHING_LADDER.map(grade =>
                   <option
@@ -223,9 +243,6 @@ class RegisterForm extends Component {
               </Input>
             </InputGroup>
           </Col>
-        </Row>
-
-        <Row>
           <Col md="6">
             <InputGroup className="mb-3">
               <InputGroupAddon addonType="prepend">
@@ -236,32 +253,16 @@ class RegisterForm extends Component {
               <Input
                 name="appointmentArea"
                 type="select"
-                value={this.state.appointment}
+                value={this.state.appointmentArea}
                 onChange={this.onChange}>
                 {
-                  COLOMBIA_APPOINTMENT_AREA.map( (area,index) =>
+                  COLOMBIA_APPOINTMENT_AREA.map((area, index) =>
                     <option
-                    key={index}
-                    value={area}>
-                    {area}
+                      key={index}
+                      value={area}>
+                      {area}
                     </option>)
                 }
-                </Input>
-            </InputGroup>
-          </Col>
-          <Col md="6">
-            <InputGroup className="mb-3">
-              <InputGroupAddon addonType="prepend">
-                <InputGroupText>
-                  <i className="icon-location-pin"></i>
-                </InputGroupText>
-              </InputGroupAddon>
-              <Input
-                type="text"
-                name="region"
-                value={this.state.region}
-                placeholder={"Región"}
-                onChange={this.onChange}>
               </Input>
             </InputGroup>
           </Col>
@@ -279,8 +280,8 @@ class RegisterForm extends Component {
                 required
                 type="text"
                 name="barterDepartment"
-                value={this.state.swapDepartment}
-                onChange={this.onChange}/>
+                value={this.state.barterDepartment}
+                onChange={this.onChange} />
             </InputGroup>
           </Col>
         </Row>
