@@ -37,6 +37,7 @@ class Messages extends Component {
       this.setState({ messages: [] });
       this.fetchMessages();
     }
+    this.setState({ messageModal: !this.state.messageModal });
   }
 
   addNewMessage = newMessage => {
@@ -73,8 +74,8 @@ class Messages extends Component {
                   </thead>
                   <tbody>
                     {
-                      this.state.messages.map(message =>
-                        <tr key={message._id}>
+                      this.state.messages.map((message, index) =>
+                        <tr key={index}>
                           <td style={{ whiteSpace: "pre-line" }} >{message.title} <br /> {message.text}</td>
                           <td>{this.formatDate(message.createdAt)}</td>
                         </tr>
