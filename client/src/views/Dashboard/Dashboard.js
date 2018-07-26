@@ -68,8 +68,8 @@ class Dashboard extends Component {
     let filters = "?";
     if (this.state.department.length > 0) filters += `department=${this.state.department}&`;
     if (this.state.municipality.length > 0) filters += `municipality=${this.state.municipality}&`;
-    if (this.state.educationalLadder.length > 0) filters += `educationalLadder=${this.state.educationalLadder}&`;
-    if (this.state.appointment.length > 0) filters += `appointment=${this.state.appointment}&`;
+    if (this.state.teachingLadder.length > 0) filters += `teachingLadder=${this.state.teachingLadder}&`;
+    if (this.state.appointmentArea.length > 0) filters += `appointmentArea=${this.state.appointmentArea}&`;
     console.log(filters);
     this.getUsers(filters);
   }
