@@ -89,7 +89,7 @@ class Register extends Component {
         appointmentArea: state.appointmentArea.value,
         barterDepartment: state.barterDepartment.value,
         zone: state.zone.value
-      }      
+      }
       Requests.post('/users', this.props.token, doc)
         .then(res => {
           console.log(res);
@@ -146,7 +146,7 @@ class Register extends Component {
                             type="text"
                             placeholder="Nombre completo"
                             name="fullname"
-                            value={this.state.name.value}
+                            value={this.state.fullname.value}
                             onChange={this.onChange} />
                         </InputGroup>
                       </Col>
