@@ -195,11 +195,12 @@ class RegisterForm extends Component {
                 </InputGroupText>
               </InputGroupAddon>
               <Input
-                type="text"
+                type="select"
                 name="zone"
                 value={this.state.zone}
-                placeholder={"Zona"}
                 onChange={this.onChange}>
+                <option value="Rural">Rural</option>
+                <option value="Urbano">Urbano</option>
               </Input>
             </InputGroup>
           </Col>

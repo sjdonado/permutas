@@ -36,7 +36,7 @@ class Register extends Component {
       teachingLadder: {value: "Grado 1 - 2277", validate: false},
       appointmentArea: {value: 'Rectores', validate: true},
       barterDepartment: {value: '', validate: true},
-      zone: {value: '', validate: false},
+      zone: {value: 'Ninguno', validate: false},
       alert: {
         visible: false,
         message: ''
@@ -87,9 +87,9 @@ class Register extends Component {
         school: state.school.value,
         teachingLadder: state.teachingLadder.value,
         appointmentArea: state.appointmentArea.value,
-        barterDepartment: state.barterDepartment.value
-      }
-      if (!state.region.value) doc.region = state.region.value;
+        barterDepartment: state.barterDepartment.value,
+        zone: state.zone.value
+      }      
       Requests.post('/users', this.props.token, doc)
         .then(res => {
           console.log(res);
@@ -348,11 +348,12 @@ class Register extends Component {
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
-                            type="text"
-                            name="region"
-                            value={this.state.region.value}
-                            placeholder={"Región"}
+                            type="select"
+                            name="zone"
+                            value={this.state.zone.value}
                             onChange={this.onChange}>
+                            <option value="Rural">Rural</option>
+                            <option value="Urbano">Urbano</option>
                           </Input>
                         </InputGroup>
                       </Col>
