@@ -67,7 +67,9 @@ a:not([href]):not([tabindex]) {
 }
 
 .filter-btn {
+  width: 25%;
   float: right;
+  margin-left: 10px;
 }
 
 .list-group-item-heading {

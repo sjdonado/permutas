@@ -6,7 +6,6 @@ import {
   COLOMBIA_REGION_LIST,
   COLOMBIA_APPOINTMENT_AREA
 } from '../../complements/Colombia';
-
 import _ from 'lodash';
 
 class Dashboard extends Component {
@@ -14,10 +13,12 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       usersData: [],
-      department: 'Atlántico',
-      municipality: 'Barranquilla',
-      teachingLadder: 'Grado 1 - 2277',
-      appointmentArea: 'Rectores',
+      department: 'Seleccionar',
+      municipality: 'Seleccionar',
+      teachingLadder: 'Seleccionar',
+      appointmentArea: 'Seleccionar',
+      COLOMBIA_TEACHING_LADDER: ['Seleccionar', ...COLOMBIA_TEACHING_LADDER],
+      COLOMBIA_APPOINTMENT_AREA: ['Seleccionar', ...COLOMBIA_APPOINTMENT_AREA]
     };
   }
   componentDidMount() {
@@ -66,12 +67,20 @@ class Dashboard extends Component {
   }
   filter = e => {
     let filters = "?";
-    if (this.state.department.length > 0) filters += `department=${this.state.department}&`;
-    if (this.state.municipality.length > 0) filters += `municipality=${this.state.municipality}&`;
-    if (this.state.teachingLadder.length > 0) filters += `teachingLadder=${this.state.teachingLadder}&`;
-    if (this.state.appointmentArea.length > 0) filters += `appointmentArea=${this.state.appointmentArea}&`;
-    console.log(filters);
+    if (this.state.department !== 'Seleccionar') filters += `department=${this.state.department}&`;
+    if (this.state.municipality !== 'Seleccionar') filters += `municipality=${this.state.municipality}&`;
+    if (this.state.teachingLadder !== 'Seleccionar') filters += `teachingLadder=${this.state.teachingLadder}&`;
+    if (this.state.appointmentArea !== 'Seleccionar') filters += `appointmentArea=${this.state.appointmentArea}&`;
     this.getUsers(filters);
+  }
+  cleanFilters = e => {
+    this.setState({
+      department: 'Seleccionar',
+      municipality: 'Seleccionar',
+      teachingLadder: 'Seleccionar',
+      appointmentArea: 'Seleccionar',
+    });
+    this.getUsers();
   }
   render() {
     return (
@@ -88,7 +97,7 @@ class Dashboard extends Component {
                     className={this.state.department.length > 0 ? "input-success" : ""}
                     value={this.state.department}
                     onChange={this.onChange}>
-                    {this.fetchDepartments().map(element =>
+                    {[{ c_digo_dane_del_departamento: 0, departamento: 'Seleccionar' }, ...this.fetchDepartments()].map(element =>
                       <option
                         key={element.c_digo_dane_del_departamento}
                         value={element.departamento}> {element.departamento}
@@ -106,7 +115,7 @@ class Dashboard extends Component {
                     className={this.state.municipality.length > 0 ? "input-success" : ""}
                     value={this.state.municipality}
                     onChange={this.onChange} >
-                    {this.filterRegionListByState(this.state.department).map(el =>
+                    {[{ c_digo_dane_del_municipio: 0, municipio: 'Seleccionar' }, ...this.filterRegionListByState(this.state.department)].map(el =>
                       <option
                         key={el.c_digo_dane_del_municipio}
                         value={el.municipio}> {el.municipio}
@@ -124,7 +133,7 @@ class Dashboard extends Component {
                     className={this.state.teachingLadder.length > 0 ? "input-success" : ""}
                     value={this.state.teachingLadder}
                     onChange={this.onChange}>
-                    {COLOMBIA_TEACHING_LADDER.map(grade =>
+                    {['Seleccionar', ...COLOMBIA_TEACHING_LADDER].map(grade =>
                       <option
                         key={grade}
                         value={grade}>
@@ -142,7 +151,7 @@ class Dashboard extends Component {
                     className={this.state.appointmentArea.length > 0 ? "input-success" : ""}
                     value={this.state.appointmentArea}
                     onChange={this.onChange}>
-                    {COLOMBIA_APPOINTMENT_AREA.map((area, index) =>
+                    {['Seleccionar', ...COLOMBIA_APPOINTMENT_AREA].map((area, index) =>
                       <option
                         key={index}
                         value={area}>
@@ -152,7 +161,8 @@ class Dashboard extends Component {
                 </InputGroup>
               </Col>
             </Row>
-            <Button color="primary" className="filter-btn" onClick={this.filter} block>Filtrar</Button>
+            <Button color="primary" className="filter-btn" onClick={this.filter}>Filtrar</Button>
+            <Button color="danger" className="filter-btn" onClick={this.cleanFilters}>Limpiar</Button>
           </CardBody>
         </Card>
         <Row>
