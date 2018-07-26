@@ -13,8 +13,8 @@ import {
   Row,
   Alert
 } from 'reactstrap';
-import { 
-  COLOMBIA_TEACHING_LADDER, 
+import {
+  COLOMBIA_TEACHING_LADDER,
   COLOMBIA_REGION_LIST,
   COLOMBIA_APPOINTMENT_AREA } from '../../../complements/Colombia';
 import _ from 'lodash';
@@ -31,12 +31,12 @@ class Register extends Component {
       telephone: {value: '', validate: true},
       mobile: {value: '', validate: true},
       department: {value: 'Atlántico', validate: false},
-      city: {value: 'Barranquilla', validate: false},
+      municipality: {value: 'Barranquilla', validate: false},
       school: {value:'', validate: true},
       teachingLadder: {value: "Grado 1 - 2277", validate: false},
       appointmentArea: {value: 'Rectores', validate: true},
       barterDepartment: {value: '', validate: true},
-      region: {value: '', validate: false},
+      zone: {value: '', validate: false},
       alert: {
         visible: false,
         message: ''
@@ -76,18 +76,18 @@ class Register extends Component {
     if(this.validateFields()){
       let state = this.state;
       let doc = {
-        fullname: state.name.value,
+        fullname: state.fullname.value,
         dni: state.dni.value,
         email: state.email.value,
         password: state.password.value,
-        phone: state.telephone.value,
-        mobilePhone: state.mobile.value,
+        telephone: state.telephone.value,
+        mobile: state.mobile.value,
         department: state.department.value,
-        village: state.city.value,
+        municipality: state.municipality.value,
         school: state.school.value,
-        educationalLadder: state.teachingLadder.value,
-        appointment: state.appointmentArea.value,        
-        swapDepartment: state.barterDepartment.value
+        teachingLadder: state.teachingLadder.value,
+        appointmentArea: state.appointmentArea.value,
+        barterDepartment: state.barterDepartment.value
       }
       if (!state.region.value) doc.region = state.region.value;
       Requests.post('/users', this.props.token, doc)
@@ -100,21 +100,19 @@ class Register extends Component {
           this.showAlert("Ocurrió un error");
           console.error(err);
         });
-    }else
-      this.showAlert("Faltan datos");
+    } else this.showAlert("Faltan datos");
   }
 
   validateFields = () => {
     let state = this.state;
     for( let propName in state){
-      let prop = state[propName];      
-      if(prop.validate && !this.validateField(prop))
-        return false;
+      let prop = state[propName];
+      if(prop.validate && !this.validateField(prop)) return false;
     }
     return true;
   }
 
-  validateField = field => {    
+  validateField = field => {
     return field.value && field.value.trim() !== '';
   }
 
@@ -135,7 +133,7 @@ class Register extends Component {
                   <h1>Registro</h1>
                   <p className="text-muted">Crea tu cuenta</p>
                   <form>
-                    
+
                     <Row>
                       <Col md="6">
                         <InputGroup className="mb-3">
@@ -147,7 +145,7 @@ class Register extends Component {
                           <Input
                             type="text"
                             placeholder="Nombre completo"
-                            name="name"
+                            name="fullname"
                             value={this.state.name.value}
                             onChange={this.onChange} />
                         </InputGroup>
@@ -260,13 +258,13 @@ class Register extends Component {
                         <InputGroup className="mb-3">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText>
-                              Ciudad
+                              Muncipio
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
                             type="select"
-                            name="city"
-                            value={this.state.city.value}
+                            name="municipality"
+                            value={this.state.municipality.value}
                             onChange={this.onChange}>
                             {this.filterRegionListByState(this.state.department.value).map(el =>
                               <option
@@ -278,6 +276,7 @@ class Register extends Component {
                         </InputGroup>
                       </Col>
                     </Row>
+
                     <Row>
                       <Col md="6">
                         <InputGroup className="mb-3">
@@ -316,6 +315,7 @@ class Register extends Component {
                         </InputGroup>
                       </Col>
                     </Row>
+
                     <Row>
                       <Col md="6">
                         <InputGroup className="mb-3">
@@ -327,10 +327,10 @@ class Register extends Component {
                           <Input
                             name="appointmentArea"
                             type="select"
-                            value={this.state.appointmentArea.value}                            
+                            value={this.state.appointmentArea.value}
                             onChange={this.onChange}>
                             {
-                              COLOMBIA_APPOINTMENT_AREA.map( (area,index) => 
+                              COLOMBIA_APPOINTMENT_AREA.map( (area,index) =>
                                 <option
                                 key={index}
                                 value={area}>
@@ -369,7 +369,7 @@ class Register extends Component {
                         type="text"
                         name="barterDepartment"
                         value={this.state.barterDepartment.value}
-                        onChange={this.onChange}/>                      
+                        onChange={this.onChange}/>
                     </InputGroup>
 
                     <Button
@@ -384,8 +384,8 @@ class Register extends Component {
                 </CardBody>
               </Card>
             </Col>
-          </Row>        
-          {alert}        
+          </Row>
+          {alert}
         </Container>
       </div>
     );
