@@ -352,6 +352,7 @@ class Register extends Component {
                             name="zone"
                             value={this.state.zone.value}
                             onChange={this.onChange}>
+                            <option value="Rural">Ninguno</option>
                             <option value="Rural">Rural</option>
                             <option value="Urbano">Urbano</option>
                           </Input>
