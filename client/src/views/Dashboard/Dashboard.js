@@ -169,14 +169,14 @@ class Dashboard extends Component {
                       {`Nombre: ${user.fullname}
                         CC: ${user.dni}
                         Correo electrónico: ${user.email}
-                        Teléfono fijo: ${user.phone}
-                        Celular: ${user.mobilePhone}
+                        Teléfono fijo: ${user.telephone}
+                        Celular: ${user.mobile}
                         Departamento: ${user.department}
                         Municipio: ${user.municipality}
-                        Vereda o Corregimiento: ${user.village}
+                        Zona: ${user.zone}
                         Institución Educativa: ${user.school}
-                        Escalafón: ${user.educationalLadder}
-                        Área de nombramiento: ${user.appointment}`}
+                        Escalafón: ${user.teachingLadder}
+                        Área de nombramiento: ${user.appointmentArea}`}
                     </ListGroupItemText>
                   </ListGroupItem>
                 )

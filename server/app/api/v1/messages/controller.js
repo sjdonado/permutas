@@ -133,14 +133,14 @@ exports.create = (req, res, next) => {
   const info = `Nombre: ${userDoc.fullname}
   CC: ${userDoc.dni}
   Correo electrónico: ${userDoc.email}
-  Teléfono fijo: ${userDoc.phone}
-  Celular: ${userDoc.mobilePhone}
+  Teléfono fijo: ${userDoc.telephone}
+  Celular: ${userDoc.mobile}
   Departamento: ${userDoc.department}
   Municipio: ${userDoc.municipality}
-  Vereda o Corregimiento: ${userDoc.village}
+  Zona: ${userDoc.zone}
   Institución Educativa: ${userDoc.school}
-  Escalafón: ${userDoc.educationalLadder}
-  Área de nombramiento: ${userDoc.appointment}`;
+  Escalafón: ${userDoc.teachingLadder}
+  Área de nombramiento: ${userDoc.appointmentArea}`;
 
   Object.assign(body, { ownerId: doc.id, title: `Te ha contactado el usuario ${userDoc.fullname}`, text: info });
 
