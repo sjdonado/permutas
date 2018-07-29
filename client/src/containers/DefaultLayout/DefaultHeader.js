@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { DropdownItem, DropdownMenu, DropdownToggle, Nav } from 'reactstrap';
+import { DropdownToggle, Nav } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
@@ -43,12 +43,8 @@ class DefaultHeader extends Component {
         <Nav className="ml-auto" navbar>
           <AppHeaderDropdown direction="down">
             <DropdownToggle nav>
-              <img src={'assets/img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+              {this.props.user.fullname}<img src={'assets/img/avatars/1.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
             </DropdownToggle>
-            <DropdownMenu right style={{ right: 'auto' }}>
-              <DropdownItem header tag="div" className="text-center"><strong>{this.props.user.fullname}</strong></DropdownItem>
-              <DropdownItem onClick={this.logout}><i className="fa fa-lock"></i> Cerrar sesión</DropdownItem>
-            </DropdownMenu>
           </AppHeaderDropdown>
         </Nav>
       </React.Fragment>

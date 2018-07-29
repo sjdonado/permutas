@@ -70,10 +70,10 @@ exports.all = (req, res, next) => {
   } = parseSortParams(query, fields);
   const sort = compactSortToStr(sortBy, direction);
 
-  const filters = [{ _id: { $ne: doc.id }, ...query }];
+  const filters = [{ _id: { $ne: doc.id }, role: { $ne: 'admin' }, ...query }];
   console.log(query);
 
-  const count = Model.countDocuments();
+  const count = Model.find({ $or: filters }).countDocuments();
   const all = Model
     .find({ $or: filters })
     .sort(sort)

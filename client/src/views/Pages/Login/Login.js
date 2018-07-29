@@ -12,7 +12,8 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  Row
+  Row,
+  Alert
 } from 'reactstrap';
 
 import Requests from '../../../requests';
@@ -23,6 +24,10 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
+      alert: {
+        visible: false,
+        message: ''
+      },
     }
   }
   handleSubmit = e => {
@@ -33,23 +38,38 @@ class Login extends Component {
     }
     Requests.post('/users/signin', this.props.token, doc)
       .then(res => {
-        console.log(res, this.props);
-        this.props.saveUser(res.item);
-        this.props.saveCurrentUser(res.item);
-        this.props.saveToken(res.meta.token);
+        if (res.item.active) {
+          this.props.saveUser(res.item);
+          this.props.saveToken(res.meta.token);
+        } else {
+          this.showAlert("Cuenta desactivada");
+        }
       })
       .catch(err => {
         console.error(err);
       });
   }
+
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
+  }
+
+  showAlert = msg => {
+    let { alert } = this.state;
+    alert.visible = true
+    alert.message = msg
+    this.setState({ alert });
   }
 
   handleKeyPress = e => {
     if (e.key === 'Enter') this.handleSubmit(e);
   }
   render() {
+    const alert = <Alert color="info"
+      isOpen={this.state.alert.visible}
+      toggle={this.onDismiss}>
+      {this.state.alert.message}
+    </Alert>
     if (this.props.token) return <Redirect to='/' />;
     return (
       <div className="app flex-row align-items-center">
@@ -121,6 +141,7 @@ class Login extends Component {
               </CardGroup>
             </Col>
           </Row>
+          {alert}
         </Container>
       </div>
     );

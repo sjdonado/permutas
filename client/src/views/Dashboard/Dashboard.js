@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Col, Row, ListGroupItem, ListGroup, ListGroupItemHeading, ListGroupItemText, Button, Card, CardBody, Input, InputGroup } from 'reactstrap';
+import { Col, Row, ListGroupItem, ListGroup, ListGroupItemHeading, ListGroupItemText, Button, Card, CardBody, Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
 import Requests from '../../requests';
 import {
   COLOMBIA_TEACHING_LADDER,
@@ -52,7 +52,15 @@ class Dashboard extends Component {
     return _.uniqBy(COLOMBIA_REGION_LIST, element => element.departamento);
   }
   onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({ [e.target.name]: e.target.value }, () => {
+      console.log(this.state);
+      let filters = "?";
+      if (this.state.department !== 'Seleccionar') filters += `department=${this.state.department}&`;
+      if (this.state.municipality !== 'Seleccionar') filters += `municipality=${this.state.municipality}&`;
+      if (this.state.teachingLadder !== 'Seleccionar') filters += `teachingLadder=${this.state.teachingLadder}&`;
+      if (this.state.appointmentArea !== 'Seleccionar') filters += `appointmentArea=${this.state.appointmentArea}&`;
+      this.getUsers(filters);
+    });
   }
   handleCheck = e => {
     const name = e.target.name;
@@ -66,12 +74,6 @@ class Dashboard extends Component {
     console.log(this.state.checkValues);
   }
   filter = e => {
-    let filters = "?";
-    if (this.state.department !== 'Seleccionar') filters += `department=${this.state.department}&`;
-    if (this.state.municipality !== 'Seleccionar') filters += `municipality=${this.state.municipality}&`;
-    if (this.state.teachingLadder !== 'Seleccionar') filters += `teachingLadder=${this.state.teachingLadder}&`;
-    if (this.state.appointmentArea !== 'Seleccionar') filters += `appointmentArea=${this.state.appointmentArea}&`;
-    this.getUsers(filters);
   }
   cleanFilters = e => {
     this.setState({
@@ -88,12 +90,16 @@ class Dashboard extends Component {
         <Card>
           <CardBody>
             <Row>
-              <Col md="3">
+              <Col md="6">
                 <InputGroup className="mb-3">
+                  <InputGroupAddon addonType="prepend">
+                    <InputGroupText>
+                      Departamento
+                    </InputGroupText>
+                  </InputGroupAddon>
                   <Input
                     type="select"
                     name="department"
-                    placeholder="Departamento"
                     className={this.state.department.length > 0 ? "input-success" : ""}
                     value={this.state.department}
                     onChange={this.onChange}>
@@ -106,12 +112,16 @@ class Dashboard extends Component {
                   </Input>
                 </InputGroup>
               </Col>
-              <Col md="3">
+              <Col md="6">
                 <InputGroup className="mb-3">
+                  <InputGroupAddon addonType="prepend">
+                    <InputGroupText>
+                      Municipio
+                    </InputGroupText>
+                  </InputGroupAddon>
                   <Input
                     type="select"
                     name="municipality"
-                    placeholder="Municipio"
                     className={this.state.municipality.length > 0 ? "input-success" : ""}
                     value={this.state.municipality}
                     onChange={this.onChange} >
@@ -124,12 +134,18 @@ class Dashboard extends Component {
                   </Input>
                 </InputGroup>
               </Col>
-              <Col md="3">
+            </Row>
+            <Row>
+              <Col md="6">
                 <InputGroup className="mb-3">
+                  <InputGroupAddon addonType="prepend">
+                    <InputGroupText>
+                      Escalafón
+                    </InputGroupText>
+                  </InputGroupAddon>
                   <Input
                     type="select"
                     name="teachingLadder"
-                    placeholder="Escalafón"
                     className={this.state.teachingLadder.length > 0 ? "input-success" : ""}
                     value={this.state.teachingLadder}
                     onChange={this.onChange}>
@@ -142,12 +158,16 @@ class Dashboard extends Component {
                   </Input>
                 </InputGroup>
               </Col>
-              <Col md="3">
+              <Col md="6">
                 <InputGroup className="mb-3">
+                  <InputGroupAddon addonType="prepend">
+                    <InputGroupText>
+                      Área de nombramiento
+                    </InputGroupText>
+                  </InputGroupAddon>
                   <Input
                     type="select"
                     name="appointmentArea"
-                    placeholder="Área de nombramiento"
                     className={this.state.appointmentArea.length > 0 ? "input-success" : ""}
                     value={this.state.appointmentArea}
                     onChange={this.onChange}>
@@ -161,7 +181,6 @@ class Dashboard extends Component {
                 </InputGroup>
               </Col>
             </Row>
-            <Button color="primary" className="filter-btn" onClick={this.filter}>Filtrar</Button>
             <Button color="danger" className="filter-btn" onClick={this.cleanFilters}>Limpiar</Button>
           </CardBody>
         </Card>
@@ -173,8 +192,8 @@ class Dashboard extends Component {
                   <ListGroupItem key={index}>
                     <ListGroupItemHeading>{user.fullname}</ListGroupItemHeading>
                     {this.props.user.contacted.some(id => id === user._id) ?
-                      <Button color="success" className="contact-btn" disabled >Contactado</Button> :
-                      <Button color="primary" className="contact-btn" onClick={e => this.interaction(user._id)}>Contactar</Button>}
+                      <Button color="success" className="contact-btn" disabled >Solicitud enviada</Button> :
+                      <Button color="primary" className="contact-btn" onClick={e => this.interaction(user._id)}>Interesado</Button>}
                     <ListGroupItemText style={{ whiteSpace: "pre-line" }}>
                       {`Nombre: ${user.fullname}
                         CC: ${user.dni}

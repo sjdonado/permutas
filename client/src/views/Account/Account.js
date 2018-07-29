@@ -6,11 +6,9 @@ import Requests from '../../requests';
 class Account extends React.Component {
 
   updateUser = e => {
-    Requests.put(`/users/${this.props.currentUser._id}`, this.props.token, this.props.currentUser)
+    Requests.put(`/users/${this.props.user._id}`, this.props.token, this.props.user)
       .then(res => {
-        console.log(res);
-        // this.props.saveUser(this.props.user);
-        // this.props.saveCurrentUser(this.props.user);
+        this.props.saveUser(res.item);
       })
       .catch(err => {
         console.error(err);
@@ -22,13 +20,13 @@ class Account extends React.Component {
       <div className="animated fadeIn">
         <Card>
           <CardHeader>
-            <h5 className="modal-title">{this.props.currentUser.fullname}</h5>
+            <h5 className="modal-title">{this.props.user.fullname}</h5>
           </CardHeader>
           <CardBody>
-            <RegisterForm {...this.props} />
+            <RegisterForm {...this.props} currentUser={this.props.user} />
           </CardBody>
           <CardFooter>
-            <Button color="primary" onClick={this.updateUser}>Guardar</Button>
+            <Button color="primary" className="filter-btn" onClick={this.updateUser}>Guardar</Button>
           </CardFooter>
         </Card>
       </div>

@@ -9919,12 +9919,13 @@ a:not([href]):not([tabindex]) {
   right: 20px; }
 
 .filter-btn {
-  width: 25%;
-  float: right;
-  margin-left: 10px; }
+  float: right; }
 
 .list-group-item-heading {
   margin-top: 15px; }
+
+.logout-nav-item, .logout-nav-item i, .logout-nav-item i:hover {
+  color: white !important; }
 
 html body .app.flex-row.align-items-center {
   height: 100vh; }

@@ -1,4 +1,5 @@
 import React from 'react';
+import RichTextEditor from 'react-rte';
 import { Button, Modal, ModalBody, ModalFooter, Input, Row, Col, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
 import Requests from '../../requests';
 
@@ -7,14 +8,16 @@ class NewMessageModal extends React.Component {
     super(props);
     this.state = {
       title: '',
-      text: ''
+      value: RichTextEditor.createEmptyValue()
     };
   }
   sendMessage = e => {
     const data = {
       title: this.state.title,
-      text: this.state.text
+      text: this.state.value.toString('html')
     };
+
+    console.log(data.text);
 
     Requests.post('/messages/global', this.props.token, data)
       .then(res => {
@@ -27,6 +30,16 @@ class NewMessageModal extends React.Component {
 
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
+
+  }
+
+  onTextChange = value => {
+    this.setState({ value });
+    if (this.props.onChange) {
+      this.props.onChange(
+        value.toString('html')
+      );
+    }
   }
 
   render() {
@@ -53,14 +66,10 @@ class NewMessageModal extends React.Component {
           </Row>
           <Row>
             <Col md="12">
-              <InputGroup className="mb-3">
-                <Input
-                  type="textarea"
-                  placeholder="Mensaje"
-                  name="text"
-                  value={this.state.text}
-                  onChange={this.onChange} />
-              </InputGroup>
+              <RichTextEditor
+                value={this.state.value}
+                onChange={this.onTextChange}
+              />
             </Col>
           </Row>
         </ModalBody>

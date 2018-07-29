@@ -69,6 +69,10 @@ const fields = {
     type: String,
     default: 'teacher',
   },
+  active: {
+    type: Boolean,
+    default: true,
+  },
   contacted: [
     {
       type: Schema.Types.ObjectId,

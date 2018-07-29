@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Card, CardBody, CardHeader, Col, Row, Table, Button } from 'reactstrap';
+import { Card, CardBody, CardHeader, Col, Row, Table, Button, Pagination, PaginationItem, PaginationLink, Badge } from 'reactstrap';
 import TeacherModal from './TeacherModal';
 import Requests from '../../requests';
+import { TRANSLATIONS } from '../../config';
 import XLSX from 'xlsx';
 
 function TeacherRow(props) {
@@ -10,8 +11,8 @@ function TeacherRow(props) {
       <th scope="row"><a onClick={e => props.onClick(props.user)}>{props.user.fullname}</a></th>
       <td>{props.user.dni}</td>
       <td>{props.user.email}</td>
-      <td>{props.user.phone}</td>
-      <td>{props.user.mobilePhone}</td>
+      <td>{props.user.role === 'teacher' ? 'Profesor' : 'Administrador'}</td>
+      <td>{props.user.active ? <Badge color="success">Activa</Badge> : <Badge color="danger">Desactivada</Badge>}</td>
     </tr>
   )
 }
@@ -23,11 +24,12 @@ class Teachers extends Component {
     this.state = {
       usersData: [],
       teacherModal: false,
-      csvData: null
+      meta: {}
     }
   }
 
   componentDidMount() {
+    this.props.deleteCurrentUser();
     this.getUsers();
   }
 
@@ -45,9 +47,11 @@ class Teachers extends Component {
   getUsers() {
     Requests.get('/users/all', this.props.token)
       .then(res => {
+        console.log(res);
         this.setState({
-          usersData: res.items
-        })
+          usersData: res.items,
+          meta: res.meta
+        });
       })
       .catch(err => {
         console.error(err);
@@ -55,14 +59,19 @@ class Teachers extends Component {
   }
 
   downloadExcel = e => {
-    const csvData = [];
-    csvData.push(Object.keys(this.state.usersData[0]).filter(key => key !== "contacted" && key !== "_id" && key !== "__v"));
-    this.state.usersData.forEach((item) => csvData.push(Object.values(item).filter((value, key) => key !== 3 && key !== 4 && key !== 18)));
-    console.log(csvData);
-    const ws = XLSX.utils.aoa_to_sheet(csvData);
+    const document = [];
+    document.push(Object.keys(this.state.usersData[0]).filter(key => key !== "contacted" && key !== "_id" && key !== "__v")
+      .map(item => TRANSLATIONS[item].spanish));
+    this.state.usersData.forEach((item) => document.push(Object.values(item).filter((value, key) => key !== 3 && key !== 4 && key !== 18)));
+    console.log(document);
+    const ws = XLSX.utils.aoa_to_sheet(document);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
     XLSX.writeFile(wb, "teachers.xlsx");
+  }
+
+  downloadPdf = e => {
+
   }
 
   render() {
@@ -70,6 +79,7 @@ class Teachers extends Component {
       <div className="animated fadeIn">
         <Row>
           <Col lg={12}>
+            <Button color="primary" className="new-message" onClick={this.downloadPdf}>Descargar pdf</Button>
             <Button color="primary" className="new-message" onClick={this.downloadExcel}>Descargar excel</Button>
           </Col>
         </Row>
@@ -80,14 +90,14 @@ class Teachers extends Component {
                 <i className="fa fa-align-justify"></i> Docentes
               </CardHeader>
               <CardBody>
-                <Table responsive hover>
+                <Table responsive striped>
                   <thead>
                     <tr>
                       <th scope="col">Nombre</th>
                       <th scope="col">Número de identificación</th>
                       <th scope="col">Correo electrónico</th>
-                      <th scope="col">Telefono</th>
-                      <th scope="col">Celular</th>
+                      <th scope="col">Tipo de cuenta</th>
+                      <th scope="col">Estado de la cuenta</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -96,6 +106,21 @@ class Teachers extends Component {
                     )}
                   </tbody>
                 </Table>
+                <Pagination>
+                  <PaginationItem disabled><PaginationLink previous tag="button">Prev</PaginationLink></PaginationItem>
+                  {[...Array(this.state.meta.pages)].map((x, i) => {
+                    console.log(x, i, this.state.meta.page)
+                    if (i + 1 === this.state.meta.page) {
+                      return (<PaginationItem active key={i}>
+                        <PaginationLink tag="button">{this.state.meta.page}</PaginationLink>
+                      </PaginationItem>)
+                    } else {
+                      return (<PaginationItem key={i}><PaginationLink tag="button">{i + 1}</PaginationLink></PaginationItem>)
+                    }
+                  }
+                  )}
+                  <PaginationItem><PaginationLink next tag="button">Next</PaginationLink></PaginationItem>
+                </Pagination>
               </CardBody>
             </Card>
           </Col>

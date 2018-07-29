@@ -36,7 +36,7 @@ class Register extends Component {
       school: { value: '', validate: true },
       teachingLadder: { value: "Grado 1 - 2277", validate: false },
       appointmentArea: { value: 'Rectores', validate: true },
-      barterDepartment: { value: '', validate: true },
+      barterDepartment: { value: 'Atlántico', validate: true },
       zone: { value: 'Rural', validate: false },
       alert: {
         visible: false,
@@ -322,7 +322,7 @@ class Register extends Component {
                         <InputGroup className="mb-3">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText>
-                              <i className="icon-user"></i>
+                              Área de nombramiento
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
@@ -345,7 +345,7 @@ class Register extends Component {
                         <InputGroup className="mb-3">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText>
-                              <i className="icon-location-pin"></i>
+                              Zona
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
@@ -368,10 +368,17 @@ class Register extends Component {
                       </InputGroupAddon>
                       <Input
                         required
-                        type="text"
+                        type="select"
                         name="barterDepartment"
                         value={this.state.barterDepartment.value}
-                        onChange={this.onChange} />
+                        onChange={this.onChange}>
+                        {this.fetchDepartments().map(element =>
+                          <option
+                            key={element.c_digo_dane_del_departamento}
+                            value={element.departamento}> {element.departamento}
+                          </option>
+                        )}
+                      </Input>
                     </InputGroup>
 
                     <Button
