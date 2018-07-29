@@ -25,7 +25,6 @@ class Teachers extends Component {
       teacherModal: false,
       csvData: null
     }
-    console.log('TEACHERS', props);
   }
 
   componentDidMount() {

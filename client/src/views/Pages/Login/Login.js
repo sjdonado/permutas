@@ -33,8 +33,9 @@ class Login extends Component {
     }
     Requests.post('/users/signin', this.props.token, doc)
       .then(res => {
-        console.log(res);
+        console.log(res, this.props);
         this.props.saveUser(res.item);
+        this.props.saveCurrentUser(res.item);
         this.props.saveToken(res.meta.token);
       })
       .catch(err => {
@@ -46,7 +47,7 @@ class Login extends Component {
   }
 
   handleKeyPress = e => {
-    if(e.key === 'Enter') this.handleSubmit(e);
+    if (e.key === 'Enter') this.handleSubmit(e);
   }
   render() {
     if (this.props.token) return <Redirect to='/' />;
@@ -54,9 +55,9 @@ class Login extends Component {
       <div className="app flex-row align-items-center">
         <Container>
           <Row className="justify-content-center">
-            <Col md="8">
+            <Col md="10">
               <CardGroup>
-                <Card className="p-4">
+                <Card className="p-5">
                   <CardBody>
                     <h1>Iniciar Sesión</h1>
                     <p className="text-muted">Iniciar sesión con tu cuenta</p>
@@ -95,13 +96,13 @@ class Login extends Component {
                           color="primary"
                           className="px-4"
                           onClick={this.handleSubmit}>
-                            Iniciar Sesión
+                          Iniciar Sesión
                         </Button>
                       </Col>
                     </Row>
                   </CardBody>
                 </Card>
-                <Card className="text-white bg-primary py-5 d-md-down-none" style={{ width: 44 + '%' }}>
+                <Card className="p-5 text-white bg-primary">
                   <CardBody className="text-center">
                     <div>
                       <h2>Registrarse</h2>

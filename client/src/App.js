@@ -8,7 +8,9 @@ import {
   saveUser,
   deleteUser,
   saveToken,
-  deleteToken
+  deleteToken,
+  saveCurrentUser,
+  deleteCurrentUser
 } from './redux';
 
 // Styles
@@ -50,6 +52,7 @@ class App extends Component {
 const mapStateToProps = (state, ownProps) => ({
   user: state.user,
   token: state.token,
+  currentUser: state.currentUser,
 });
 
 const mapDispatchToProps = {
@@ -57,6 +60,8 @@ const mapDispatchToProps = {
   deleteUser,
   saveToken,
   deleteToken,
+  saveCurrentUser,
+  deleteCurrentUser
 };
 
 export default connect(

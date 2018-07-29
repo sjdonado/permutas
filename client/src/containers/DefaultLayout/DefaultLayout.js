@@ -32,7 +32,7 @@ class DefaultLayout extends Component {
     super(props);
     const items = [
       {
-        name: 'Inicio',
+        name: 'Permutas',
         url: '/dashboard',
         icon: 'icon-home',
       },
@@ -40,12 +40,17 @@ class DefaultLayout extends Component {
         name: 'Mensajes',
         url: '/messages',
         icon: 'icon-speech'
+      },
+      {
+        name: 'Cuenta',
+        url: '/account',
+        icon: 'icon-user',
       }
     ];
 
     if (props.user.role === 'admin')
       items.push({
-        name: 'Docentes',
+        name: 'Administrador',
         url: '/teachers',
         icon: 'icon-people',
       });
