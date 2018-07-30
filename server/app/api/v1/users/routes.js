@@ -26,6 +26,9 @@ router.route('/')
 router.route('/signin')
   .post(controller.signin, authFailed);
 
+router.route('/forgotpass')
+  .post(controller.forgotPass);
+
 router.route('/:id')
   .get(controller.read)
   .put(controller.update)

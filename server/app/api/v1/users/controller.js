@@ -11,6 +11,7 @@ const {
   parsePaginationParams,
   parseSortParams,
   compactSortToStr,
+  sendForgotPassEmail
 } = require('./../../../utils/');
 
 exports.id = (req, res, next) => {
@@ -216,3 +217,33 @@ exports.signin = (req, res, next) => {
       next(new Error(error));
     });
 };
+
+exports.forgotPass = (req, res, next) => {
+  const {
+    body,
+  } = req;
+
+  const {
+    email,
+  } = body;
+
+  const doc = Model.findOne({
+    email,
+  });
+
+  sendForgotPassEmail(email, (randomPassword) => {
+    Object.assign(doc, { password: randomPassword });
+
+    doc.save()
+      .then((updated) => {
+        res.json({
+          success: true,
+          item: updated,
+        });
+      })
+      .catch((err) => {
+        next(new Error(err));
+      });
+  });
+
+}
