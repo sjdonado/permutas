@@ -4,6 +4,8 @@ import TeacherModal from './TeacherModal';
 import Requests from '../../requests';
 import { TRANSLATIONS } from '../../config';
 import XLSX from 'xlsx';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 function TeacherRow(props) {
   return (
@@ -11,7 +13,7 @@ function TeacherRow(props) {
       <th scope="row"><a onClick={e => props.onClick(props.user)}>{props.user.fullname}</a></th>
       <td>{props.user.dni}</td>
       <td>{props.user.email}</td>
-      <td>{props.user.role === 'teacher' ? 'Profesor' : 'Administrador'}</td>
+      <td>{props.user.role === 'teacher' ? 'Profesor' : 'Admin'}</td>
       <td>{props.user.active ? <Badge color="success">Activa</Badge> : <Badge color="danger">Desactivada</Badge>}</td>
     </tr>
   )
@@ -62,8 +64,9 @@ class Teachers extends Component {
     const document = [];
     document.push(Object.keys(this.state.usersData[0]).filter(key => key !== "contacted" && key !== "_id" && key !== "__v")
       .map(item => TRANSLATIONS[item].spanish));
-    this.state.usersData.forEach((item) => document.push(Object.values(item).filter((value, key) => key !== 3 && key !== 4 && key !== 18)));
-    console.log(document);
+    this.state.usersData.forEach(object => {
+      document.push(Object.keys(object).filter(key => key !== "contacted" && key !== "_id" && key !== "__v").map(item => (item === 'active' ? object[item] ? 'Activa' : 'Desactivada' : item === 'role' ? object[item] ? 'Admin' : 'Docente' : object[item])));
+    });
     const ws = XLSX.utils.aoa_to_sheet(document);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
@@ -71,7 +74,21 @@ class Teachers extends Component {
   }
 
   downloadPdf = e => {
-
+    const rows = Object.keys(this.state.usersData[0]).filter(key => key !== "contacted" && key !== "_id" && key !== "__v")
+      .map(item => ({ title: TRANSLATIONS[item].spanish, dataKey: item }));
+    let columns = this.state.usersData.map((object, index) => {
+      const user = Object.assign(object, { active: object.active ? 'Activa' : 'Desactivada', role: object.role === 'admin' ? 'Admin' : 'Docente' });
+      return { id: index, ...user };
+    });
+    columns.shift(0);
+    console.log(rows, columns);
+    const doc = new jsPDF({
+      orientation: 'landscape',
+      unit: 'in',
+      format: 'A1'
+    });
+    doc.autoTable(rows, columns);
+    doc.save('teachers.pdf');
   }
 
   render() {
@@ -79,8 +96,8 @@ class Teachers extends Component {
       <div className="animated fadeIn">
         <Row>
           <Col lg={12}>
+            <Button color="primary" className="new-message" style={{ marginLeft: "20px" }} onClick={this.downloadExcel}>Descargar excel</Button>
             <Button color="primary" className="new-message" onClick={this.downloadPdf}>Descargar pdf</Button>
-            <Button color="primary" className="new-message" onClick={this.downloadExcel}>Descargar excel</Button>
           </Col>
         </Row>
         <Row>
