@@ -3,8 +3,8 @@
 ## Installation
 
 ```
-npm install
-cd ./ui && npm install
+yarn install
+yarn start
 ```
 
 Create a `.env` file in the ./server directory and paste:
