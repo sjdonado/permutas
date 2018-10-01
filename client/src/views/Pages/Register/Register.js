@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import {
   Button,
   Card,
@@ -16,7 +16,8 @@ import {
 import {
   COLOMBIA_TEACHING_LADDER,
   COLOMBIA_REGION_LIST,
-  COLOMBIA_APPOINTMENT_AREA } from '../../../complements/Colombia';
+  COLOMBIA_APPOINTMENT_AREA
+} from '../../../complements/Colombia';
 import _ from 'lodash';
 import Requests from '../../../requests';
 
@@ -24,24 +25,24 @@ class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: {value: '', validate: true},
-      password: {value: '', validate: true},
-      dni: {value: '', validate: true},
-      fullname: {value: '', validate: true},
-      telephone: {value: '', validate: true},
-      mobile: {value: '', validate: true},
-      department: {value: 'Atlántico', validate: false},
-      municipality: {value: 'Barranquilla', validate: false},
-      school: {value:'', validate: true},
-      teachingLadder: {value: "Grado 1 - 2277", validate: false},
-      appointmentArea: {value: 'Rectores', validate: true},
-      barterDepartment: {value: '', validate: true},
-      zone: {value: 'Ninguno', validate: false},
+      email: { value: '', validate: true },
+      password: { value: '', validate: true },
+      dni: { value: '', validate: true },
+      fullname: { value: '', validate: true },
+      telephone: { value: '', validate: true },
+      mobile: { value: '', validate: true },
+      department: { value: 'Atlántico', validate: false },
+      municipality: { value: 'Barranquilla', validate: false },
+      school: { value: '', validate: true },
+      teachingLadder: { value: "Grado 1 - 2277", validate: false },
+      appointmentArea: { value: 'Rectores', validate: true },
+      barterDepartment: { value: 'Atlántico', validate: true },
+      zone: { value: 'Rural', validate: false },
       alert: {
         visible: false,
         message: ''
       },
-    }
+    };
   }
 
   filterRegionListByState = department => {
@@ -73,7 +74,7 @@ class Register extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    if(this.validateFields()){
+    if (this.validateFields()) {
       let state = this.state;
       let doc = {
         fullname: state.fullname.value,
@@ -105,9 +106,9 @@ class Register extends Component {
 
   validateFields = () => {
     let state = this.state;
-    for( let propName in state){
+    for (let propName in state) {
       let prop = state[propName];
-      if(prop.validate && !this.validateField(prop)) return false;
+      if (prop.validate && !this.validateField(prop)) return false;
     }
     return true;
   }
@@ -130,7 +131,7 @@ class Register extends Component {
             <Col md="8">
               <Card className="mx-4">
                 <CardBody className="p-4">
-                  <h1>Registro</h1>
+                  <h1><Link to="/login">&larr;</Link> Registro</h1>
                   <p className="text-muted">Crea tu cuenta</p>
                   <form>
 
@@ -321,7 +322,7 @@ class Register extends Component {
                         <InputGroup className="mb-3">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText>
-                              <i className="icon-user"></i>
+                              Área de nombramiento
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
@@ -330,21 +331,21 @@ class Register extends Component {
                             value={this.state.appointmentArea.value}
                             onChange={this.onChange}>
                             {
-                              COLOMBIA_APPOINTMENT_AREA.map( (area,index) =>
+                              COLOMBIA_APPOINTMENT_AREA.map((area, index) =>
                                 <option
-                                key={index}
-                                value={area}>
-                                {area}
+                                  key={index}
+                                  value={area}>
+                                  {area}
                                 </option>)
                             }
-                            </Input>
+                          </Input>
                         </InputGroup>
                       </Col>
                       <Col md="6">
                         <InputGroup className="mb-3">
                           <InputGroupAddon addonType="prepend">
                             <InputGroupText>
-                              <i className="icon-location-pin"></i>
+                              Zona
                             </InputGroupText>
                           </InputGroupAddon>
                           <Input
@@ -352,7 +353,6 @@ class Register extends Component {
                             name="zone"
                             value={this.state.zone.value}
                             onChange={this.onChange}>
-                            <option value="Rural">Ninguno</option>
                             <option value="Rural">Rural</option>
                             <option value="Urbano">Urbano</option>
                           </Input>
@@ -368,10 +368,17 @@ class Register extends Component {
                       </InputGroupAddon>
                       <Input
                         required
-                        type="text"
+                        type="select"
                         name="barterDepartment"
                         value={this.state.barterDepartment.value}
-                        onChange={this.onChange}/>
+                        onChange={this.onChange}>
+                        {this.fetchDepartments().map(element =>
+                          <option
+                            key={element.c_digo_dane_del_departamento}
+                            value={element.departamento}> {element.departamento}
+                          </option>
+                        )}
+                      </Input>
                     </InputGroup>
 
                     <Button

@@ -191,7 +191,7 @@ class RegisterForm extends Component {
             <InputGroup className="mb-3">
               <InputGroupAddon addonType="prepend">
                 <InputGroupText>
-                  <i className="icon-location-pin"></i>
+                  Zona
                 </InputGroupText>
               </InputGroupAddon>
               <Input
@@ -199,7 +199,6 @@ class RegisterForm extends Component {
                 name="zone"
                 value={this.state.zone}
                 onChange={this.onChange}>
-                <option value="Rural">Ninguno</option>
                 <option value="Rural">Rural</option>
                 <option value="Urbano">Urbano</option>
               </Input>
@@ -209,18 +208,16 @@ class RegisterForm extends Component {
             <InputGroup className="mb-3">
               <InputGroupAddon addonType="prepend">
                 <InputGroupText>
-                  <i className="icon-notebook"></i>
+                  Institución educativa
                 </InputGroupText>
               </InputGroupAddon>
               <Input
                 name="school"
                 type="text"
-                placeholder="Institución educativa"
                 value={this.state.school}
                 onChange={this.onChange} />
             </InputGroup>
           </Col>
-
         </Row>
 
         <Row>
@@ -248,9 +245,7 @@ class RegisterForm extends Component {
           <Col md="6">
             <InputGroup className="mb-3">
               <InputGroupAddon addonType="prepend">
-                <InputGroupText>
-                  <i className="icon-user"></i>
-                </InputGroupText>
+                Área de nombramiento
               </InputGroupAddon>
               <Input
                 name="appointmentArea"
@@ -280,10 +275,17 @@ class RegisterForm extends Component {
               </InputGroupAddon>
               <Input
                 required
-                type="text"
+                type="select"
                 name="barterDepartment"
-                value={this.state.barterDepartment}
-                onChange={this.onChange} />
+                value={this.state.barterDepartment.value}
+                onChange={this.onChange}>
+                {this.fetchDepartments().map(element =>
+                  <option
+                    key={element.c_digo_dane_del_departamento}
+                    value={element.departamento}> {element.departamento}
+                  </option>
+                )}
+              </Input>
             </InputGroup>
           </Col>
         </Row>

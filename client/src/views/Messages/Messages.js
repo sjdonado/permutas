@@ -76,7 +76,7 @@ class Messages extends Component {
                     {
                       this.state.messages.map((message, index) =>
                         <tr key={index}>
-                          <td style={{ whiteSpace: "pre-line" }} >{message.title} <br /> {message.text}</td>
+                          <td style={{ whiteSpace: "pre-line", width: "90%" }} >{message.title} <br /> <div dangerouslySetInnerHTML={{ __html: message.text }} /></td>
                           <td>{this.formatDate(message.createdAt)}</td>
                         </tr>
                       )

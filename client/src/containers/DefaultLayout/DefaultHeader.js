@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { DropdownItem, DropdownMenu, DropdownToggle, Nav } from 'reactstrap';
+import { DropdownToggle, Nav } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import TeacherModal from './../../views/Teachers/TeacherModal';
 
 import { AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import logo from '../../assets/img/brand/logo.svg';
@@ -19,18 +18,6 @@ class DefaultHeader extends Component {
     super(props);
     this.state = {
       teacherModal: false,
-    }
-  }
-
-  toggleTeacherModal = e => {
-    console.log('CLICK');
-    this.setState({
-      teacherModal: !this.state.teacherModal,
-    });
-    if (this.props.currentUser) {
-      this.props.deleteCurrentUser();
-    } else {
-      this.props.saveCurrentUser(this.props.user);
     }
   }
 
@@ -56,16 +43,10 @@ class DefaultHeader extends Component {
         <Nav className="ml-auto" navbar>
           <AppHeaderDropdown direction="down">
             <DropdownToggle nav>
-              <img src={'assets/img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+              {this.props.user.fullname}<img src={'assets/img/avatars/1.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
             </DropdownToggle>
-            <DropdownMenu right style={{ right: 'auto' }}>
-              <DropdownItem header tag="div" className="text-center"><strong>{this.props.user.fullname}</strong></DropdownItem>
-              <DropdownItem onClick={this.toggleTeacherModal}><i className="fa fa-user"></i> Perfil</DropdownItem>
-              <DropdownItem onClick={this.logout}><i className="fa fa-lock"></i> Cerrar sesión</DropdownItem>
-            </DropdownMenu>
           </AppHeaderDropdown>
         </Nav>
-        {this.state.teacherModal && <TeacherModal open={this.state.teacherModal} toggle={this.toggleTeacherModal} {...this.props} />}
       </React.Fragment>
     );
   }

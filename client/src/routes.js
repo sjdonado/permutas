@@ -7,6 +7,11 @@ function Loading() {
   return <div>Loading...</div>;
 }
 
+const Account = Loadable({
+  loader: () => import('./views/Account/Account'),
+  loading: Loading,
+});
+
 const Dashboard = Loadable({
   loader: () => import('./views/Dashboard/Dashboard'),
   loading: Loading,
@@ -26,7 +31,8 @@ const Messages = Loadable({
 const routes = [
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
-  { path: '/messages/', exact: true, name: 'Messages', component: Messages },
+  { path: '/messages', exact: true, name: 'Messages', component: Messages },
+  { path: '/account', exact: true, name: 'Account', component: Account },
   { path: '/teachers', exact: true, name: 'Teachers', component: Teachers }
 ];
 

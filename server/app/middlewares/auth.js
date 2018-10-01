@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const config = require('./../config');
 
-const blacklistAuth = [{ route: '/api/v1/users', method: 'POST' }, { route: '/api/v1/users/signin', method: 'POST' }];
+const blacklistAuth = [{ route: '/api/v1/users', method: 'POST' }, { route: '/api/v1/users/signin', method: 'POST' }, { route: '/api/v1/users/forgotpass', method: 'POST' }];
 
 const auth = (req, res, next) => {
   if (blacklistAuth.some(object => object.route === req.baseUrl && object.method === req.method)) {

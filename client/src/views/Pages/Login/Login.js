@@ -12,7 +12,8 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupText,
-  Row
+  Row,
+  Alert
 } from 'reactstrap';
 
 import Requests from '../../../requests';
@@ -23,6 +24,10 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
+      alert: {
+        visible: false,
+        message: ''
+      },
     }
   }
   handleSubmit = e => {
@@ -33,30 +38,46 @@ class Login extends Component {
     }
     Requests.post('/users/signin', this.props.token, doc)
       .then(res => {
-        console.log(res);
-        this.props.saveUser(res.item);
-        this.props.saveToken(res.meta.token);
+        if (res.item.active) {
+          this.props.saveUser(res.item);
+          this.props.saveToken(res.meta.token);
+        } else {
+          this.showAlert("Cuenta desactivada");
+        }
       })
       .catch(err => {
         console.error(err);
       });
   }
+
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  showAlert = msg => {
+    let { alert } = this.state;
+    alert.visible = true
+    alert.message = msg
+    this.setState({ alert });
+  }
+
   handleKeyPress = e => {
-    if(e.key === 'Enter') this.handleSubmit(e);
+    if (e.key === 'Enter') this.handleSubmit(e);
   }
   render() {
+    const alert = <Alert color="info"
+      isOpen={this.state.alert.visible}
+      toggle={this.onDismiss}>
+      {this.state.alert.message}
+    </Alert>
     if (this.props.token) return <Redirect to='/' />;
     return (
       <div className="app flex-row align-items-center">
         <Container>
           <Row className="justify-content-center">
-            <Col md="8">
+            <Col md="10">
               <CardGroup>
-                <Card className="p-4">
+                <Card className="p-5">
                   <CardBody>
                     <h1>Iniciar Sesión</h1>
                     <p className="text-muted">Iniciar sesión con tu cuenta</p>
@@ -95,13 +116,13 @@ class Login extends Component {
                           color="primary"
                           className="px-4"
                           onClick={this.handleSubmit}>
-                            Iniciar Sesión
+                          Iniciar Sesión
                         </Button>
                       </Col>
                     </Row>
                   </CardBody>
                 </Card>
-                <Card className="text-white bg-primary py-5 d-md-down-none" style={{ width: 44 + '%' }}>
+                <Card className="p-5 text-white bg-primary">
                   <CardBody className="text-center">
                     <div>
                       <h2>Registrarse</h2>
@@ -120,6 +141,7 @@ class Login extends Component {
               </CardGroup>
             </Col>
           </Row>
+          {alert}
         </Container>
       </div>
     );

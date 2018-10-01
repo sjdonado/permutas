@@ -8,7 +8,6 @@ class TeacherModal extends React.Component {
     Requests.put(`/users/${this.props.currentUser._id}`, this.props.token, this.props.currentUser)
       .then(res => {
         this.props.toggle();
-        console.log('MANIYA');
       })
       .catch(err => {
         console.error(err);
@@ -26,6 +25,11 @@ class TeacherModal extends React.Component {
       });
   }
 
+  deactivate = e => {
+    this.props.saveCurrentUser(Object.assign(this.props.currentUser, { active: !this.props.currentUser.active }));
+    this.updateUser();
+  }
+
   render() {
     return (
       <Modal isOpen={this.props.open} toggle={this.props.toggle} size="lg" >
@@ -34,9 +38,9 @@ class TeacherModal extends React.Component {
           <RegisterForm {...this.props} />
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={this.updateUser}>Guardar</Button>
           {this.props.user.role === "admin" && <Button color="danger" onClick={this.deleteUser}>Eliminar</Button>}
-          <Button color="secundary" onClick={this.props.toggle}>Salir</Button>
+          <Button color="secundary" onClick={this.deactivate}>{this.props.currentUser.active ? 'Desactivar' : 'Activar'}</Button>
+          <Button color="primary" onClick={this.updateUser}>Guardar</Button>
         </ModalFooter>
       </Modal>
     )

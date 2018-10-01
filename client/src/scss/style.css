@@ -9924,5 +9924,8 @@ a:not([href]):not([tabindex]) {
 .list-group-item-heading {
   margin-top: 15px; }
 
+.logout-nav-item, .logout-nav-item i, .logout-nav-item i:hover {
+  color: white !important; }
+
 html body .app.flex-row.align-items-center {
   height: 100vh; }

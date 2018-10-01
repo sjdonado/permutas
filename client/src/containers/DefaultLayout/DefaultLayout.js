@@ -32,7 +32,7 @@ class DefaultLayout extends Component {
     super(props);
     const items = [
       {
-        name: 'Inicio',
+        name: 'Permutas',
         url: '/dashboard',
         icon: 'icon-home',
       },
@@ -40,18 +40,28 @@ class DefaultLayout extends Component {
         name: 'Mensajes',
         url: '/messages',
         icon: 'icon-speech'
+      },
+      {
+        name: 'Cuenta',
+        url: '/account',
+        icon: 'icon-user',
       }
     ];
 
     if (props.user.role === 'admin')
       items.push({
-        name: 'Docentes',
+        name: 'Administrador',
         url: '/teachers',
         icon: 'icon-people',
       });
     this.state = {
       navigation: { items: items }
     }
+  }
+
+  logout = () => {
+    this.props.deleteToken();
+    this.props.deleteUser();
   }
   render() {
     return (
@@ -64,6 +74,11 @@ class DefaultLayout extends Component {
             <AppSidebarHeader />
             <AppSidebarForm />
             <AppSidebarNav navConfig={this.state.navigation} {...this.props} />
+            <div className="nav-item">
+              <a className="nav-link nav-link-danger logout-nav-item" href="/" onClick={this.logout}>
+                <i className="nav-icon fa fa-lock"></i> Cerrar sesión
+              </a>
+            </div>
             <AppSidebarFooter />
             <AppSidebarMinimizer />
           </AppSidebar>
